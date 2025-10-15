@@ -1,0 +1,154 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 20px;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 40px;
+
+  .app-logo {
+    font-size: 80px;
+    color: var(--ion-color-primary);
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+.form-section {
+  .login-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    margin: 0;
+
+    ion-card-content {
+      padding: 30px 20px;
+    }
+  }
+
+  .input-item {
+    --background: #f5f5f5;
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --inner-padding-end: 0;
+    margin-bottom: 16px;
+
+    ion-icon {
+      color: var(--ion-color-medium);
+      margin-right: 12px;
+      font-size: 20px;
+    }
+
+    .password-toggle {
+      cursor: pointer;
+      margin-right: 0;
+    }
+
+    .custom-input {
+      --padding-start: 0;
+    }
+  }
+
+  .forgot-password {
+    text-align: right;
+    margin-bottom: 20px;
+    cursor: pointer;
+
+    small {
+      font-size: 13px;
+    }
+  }
+
+  .login-button {
+    --background: linear-gradient(
+      135deg,
+      var(--ion-color-primary) 0%,
+      var(--ion-color-secondary) 100%
+    );
+    --box-shadow: 0 4px 15px rgba(var(--ion-color-primary-rgb), 0.3);
+    height: 50px;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 30px 0;
+
+    &::before,
+    &::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    span {
+      padding: 0 15px;
+      color: var(--ion-color-medium);
+      font-size: 13px;
+    }
+  }
+
+  .social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    .social-btn {
+      --border-width: 2px;
+      --border-color: #e0e0e0;
+      width: 60px;
+      height: 60px;
+      --border-radius: 50%;
+
+      ion-icon {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .signup-link {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 14px;
+
+    .link {
+      cursor: pointer;
+      margin-left: 5px;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .header-section {
+    h1 {
+      color: var(--ion-color-light);
+    }
+  }
+
+  .form-section {
+    .input-item {
+      --background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}

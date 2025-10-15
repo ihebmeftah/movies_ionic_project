@@ -1,0 +1,51 @@
+<ion-content [fullscreen]="true">
+  <div class="boarding-container">
+    <!-- Top Section with Logo and Branding -->
+    <div class="branding-section">
+      <div class="logo-wrapper">
+        <ion-icon name="film-outline" class="main-logo"></ion-icon>
+      </div>
+      <h1 class="app-title">Movies App</h1>
+      <p class="app-subtitle">Discover, Watch, Enjoy</p>
+    </div>
+
+    <!-- Illustration Section -->
+    <div class="illustration-section">
+      <div class="illustration-card">
+        <ion-icon name="ticket-outline" class="feature-icon"></ion-icon>
+        <ion-icon name="videocam-outline" class="feature-icon"></ion-icon>
+        <ion-icon name="star-outline" class="feature-icon"></ion-icon>
+      </div>
+      <h2>Your Cinema Experience</h2>
+      <p>Stream thousands of movies and shows anytime, anywhere</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-section">
+      <ion-button expand="block" shape="round" size="large" class="primary-button" (click)="goToLogin()">
+        <ion-icon name="log-in-outline" slot="start"></ion-icon>
+        Sign In
+      </ion-button>
+
+      <ion-button expand="block" shape="round" size="large" fill="outline" class="secondary-button"
+        (click)="goToRegister()">
+        <ion-icon name="person-add-outline" slot="start"></ion-icon>
+        Create Account
+      </ion-button>
+
+      <!-- Skip Option -->
+      <div class="skip-section">
+        <ion-text color="medium">
+          <small>Continue as guest</small>
+        </ion-text>
+      </div>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="background-decoration">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+    </div>
+  </div>
+</ion-content>

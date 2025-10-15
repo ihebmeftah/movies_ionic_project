@@ -1,0 +1,97 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+    <div class="register-container">
+        <!-- Logo/Header Section -->
+        <div class="header-section">
+            <ion-icon name="film-outline" class="app-logo"></ion-icon>
+            <h1>Create Account</h1>
+            <p>Sign up to get started</p>
+        </div>
+
+        <!-- Register Form -->
+        <div class="form-section">
+            <ion-card class="register-card">
+                <ion-card-content>
+                    <!-- Full Name Input -->
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="person-outline" slot="start"></ion-icon>
+                        <ion-input type="text" placeholder="Full Name" [(ngModel)]="fullName" class="custom-input">
+                        </ion-input>
+                    </ion-item>
+
+                    <!-- Email Input -->
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="mail-outline" slot="start"></ion-icon>
+                        <ion-input type="email" placeholder="Email" [(ngModel)]="email" class="custom-input">
+                        </ion-input>
+                    </ion-item>
+
+                    <!-- Password Input -->
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                        <ion-input [type]="passwordType" placeholder="Password" [(ngModel)]="password"
+                            class="custom-input">
+                        </ion-input>
+                        <ion-icon [name]="passwordIcon" slot="end" (click)="togglePassword()" class="password-toggle">
+                        </ion-icon>
+                    </ion-item>
+
+                    <!-- Confirm Password Input -->
+                    <ion-item lines="none" class="input-item">
+                        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                        <ion-input [type]="confirmPasswordType" placeholder="Confirm Password"
+                            [(ngModel)]="confirmPassword" class="custom-input">
+                        </ion-input>
+                        <ion-icon [name]="confirmPasswordIcon" slot="end" (click)="toggleConfirmPassword()"
+                            class="password-toggle">
+                        </ion-icon>
+                    </ion-item>
+
+                    <!-- Terms and Conditions -->
+                    <ion-item lines="none" class="terms-item">
+                        <ion-checkbox slot="start" [(ngModel)]="acceptTerms" class="terms-checkbox">
+                        </ion-checkbox>
+                        <ion-label class="terms-label">
+                            <small>
+                                I agree to the
+                                <ion-text color="primary">Terms & Conditions</ion-text>
+                            </small>
+                        </ion-label>
+                    </ion-item>
+
+                    <!-- Register Button -->
+                    <ion-button expand="block" shape="round" class="register-button" (click)="onRegister()">
+                        Create Account
+                    </ion-button>
+
+                    <!-- Divider -->
+                    <div class="divider">
+                        <span>or sign up with</span>
+                    </div>
+
+                    <!-- Social Signup Buttons -->
+                    <div class="social-buttons">
+                        <ion-button fill="outline" shape="round" class="social-btn">
+                            <ion-icon name="logo-google"></ion-icon>
+                        </ion-button>
+                        <ion-button fill="outline" shape="round" class="social-btn">
+                            <ion-icon name="logo-facebook"></ion-icon>
+                        </ion-button>
+                        <ion-button fill="outline" shape="round" class="social-btn">
+                            <ion-icon name="logo-apple"></ion-icon>
+                        </ion-button>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+
+            <!-- Login Link -->
+            <div class="login-link">
+                <ion-text>
+                    Already have an account?
+                    <ion-text color="primary" (click)="goToLogin()" class="link">
+                        <strong>Sign In</strong>
+                    </ion-text>
+                </ion-text>
+            </div>
+        </div>
+    </div>
+</ion-content>
