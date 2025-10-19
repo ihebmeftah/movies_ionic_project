@@ -17,6 +17,23 @@ interface Movie {
   isFavorite: boolean;
 }
 
+interface User {
+  id: number;
+  name: string;
+  avatar: string;
+  location: string;
+  isOnline: boolean;
+}
+
+interface Actor {
+  id: number;
+  name: string;
+  image: string;
+  knownFor: string;
+  rating: number;
+  isFavorite: boolean;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -104,17 +121,104 @@ export class HomePage {
     }
   ];
 
+  users: User[] = [
+    {
+      id: 1,
+      name: 'Sarah Johnson',
+      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+      location: 'New York',
+      isOnline: true
+    },
+    {
+      id: 2,
+      name: 'Mike Chen',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+      location: 'Los Angeles',
+      isOnline: true
+    },
+    {
+      id: 3,
+      name: 'Emma Wilson',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+      location: 'London',
+      isOnline: false
+    },
+    {
+      id: 4,
+      name: 'David Rodriguez',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+      location: 'Madrid',
+      isOnline: true
+    },
+    {
+      id: 5,
+      name: 'Lisa Park',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
+      location: 'Seoul',
+      isOnline: true
+    }
+  ];
+
+  actors: Actor[] = [
+    {
+      id: 1,
+      name: 'Leonardo DiCaprio',
+      image: 'https://image.tmdb.org/t/p/w500/wo2hJp04iT5l3hZ8AcLio4kjiuq.jpg',
+      knownFor: 'Inception, Titanic',
+      rating: 9.2,
+      isFavorite: false
+    },
+    {
+      id: 2,
+      name: 'Scarlett Johansson',
+      image: 'https://image.tmdb.org/t/p/w500/6WQpSxH6Y4xepXrIKd78nARuYVx.jpg',
+      knownFor: 'Avengers, Lost in Translation',
+      rating: 8.8,
+      isFavorite: true
+    },
+    {
+      id: 3,
+      name: 'Tom Hanks',
+      image: 'https://image.tmdb.org/t/p/w500/xndWFsBlClOJFRdhSt4NBwiPq2o.jpg',
+      knownFor: 'Forrest Gump, Cast Away',
+      rating: 9.0,
+      isFavorite: false
+    },
+    {
+      id: 4,
+      name: 'Emma Stone',
+      image: 'https://image.tmdb.org/t/p/w500/2hwXbYKyqFqgCNd3QHxV3kqk3hm.jpg',
+      knownFor: 'La La Land, The Help',
+      rating: 8.5,
+      isFavorite: true
+    },
+    {
+      id: 5,
+      name: 'Ryan Gosling',
+      image: 'https://image.tmdb.org/t/p/w500/lyvszvJJqqI8aqBJ70XzdCNoK0y.jpg',
+      knownFor: 'La La Land, Drive',
+      rating: 8.7,
+      isFavorite: false
+    }
+  ];
+
   constructor(private router: Router) { }
 
   selectCategory(category: Category) {
-    this.categories.forEach(cat => cat.active = false);
-    category.active = true;
-    // Add filter logic here
+    // Navigate to category page with category name parameter
+    this.router.navigate(['/category'], {
+      queryParams: { categoryname: category.name.toLowerCase() }
+    });
   }
 
   toggleFavorite(movie: Movie) {
     movie.isFavorite = !movie.isFavorite;
     // Add favorite management logic here
+  }
+
+  toggleActorFavorite(actor: Actor) {
+    actor.isFavorite = !actor.isFavorite;
+    // Add actor favorite management logic here
   }
 
   onSearch(event: any) {

@@ -31,6 +31,61 @@
     </div>
   </div>
 
+  <!-- Users Section -->
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Active Users</h2>
+      <ion-text color="primary" class="see-all">See All</ion-text>
+    </div>
+
+    <div class="users-scroll">
+      <div *ngFor="let user of users" class="user-card">
+        <div class="user-avatar">
+          <img [src]="user.avatar" [alt]="user.name" />
+          <div class="online-indicator" [class.online]="user.isOnline"></div>
+        </div>
+        <div class="user-info">
+          <h4>{{ user.name }}</h4>
+          <p>{{ user.location }}</p>
+        </div>
+        <ion-button fill="clear" size="small" class="follow-btn">
+          <ion-icon name="person-add-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actors Section -->
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Popular Actors</h2>
+      <ion-text color="primary" class="see-all">See All</ion-text>
+    </div>
+
+    <div class="actors-scroll">
+      <div *ngFor="let actor of actors" class="actor-card">
+        <div class="actor-image">
+          <img [src]="actor.image" [alt]="actor.name" />
+          <div class="actor-overlay">
+            <ion-button fill="clear" class="favorite-btn" (click)="toggleActorFavorite(actor)">
+              <ion-icon [name]="actor.isFavorite ? 'heart' : 'heart-outline'"
+                [class.favorite-active]="actor.isFavorite">
+              </ion-icon>
+            </ion-button>
+          </div>
+        </div>
+        <div class="actor-info">
+          <h4>{{ actor.name }}</h4>
+          <p>{{ actor.knownFor }}</p>
+          <div class="actor-rating">
+            <ion-icon name="star"></ion-icon>
+            <span>{{ actor.rating }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Top Movies Section -->
   <div class="section-container">
     <div class="section-header">

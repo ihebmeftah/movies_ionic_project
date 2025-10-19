@@ -17,8 +17,10 @@
   <div class="category-header">
     <div class="header-content">
       <div class="greeting-section">
-        <h1>Browse Categories</h1>
-        <p>Discover movies by genre</p>
+        <h1 *ngIf="!selectedCategoryName">Browse Categories</h1>
+        <h1 *ngIf="selectedCategoryName">{{ selectedCategoryName | titlecase }} Movies</h1>
+        <p *ngIf="!selectedCategoryName">Discover movies by genre</p>
+        <p *ngIf="selectedCategoryName">Explore {{ selectedCategoryName }} movies</p>
       </div>
     </div>
 

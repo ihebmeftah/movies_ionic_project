@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 interface Category {
   id: number;
@@ -18,6 +19,7 @@ interface Category {
 })
 export class CategoryPage implements OnInit {
   searchQuery: string = '';
+  selectedCategoryName: string = '';
 
   categories: Category[] = [
     {
@@ -132,18 +134,35 @@ export class CategoryPage implements OnInit {
 
   filteredCategories: Category[] = [];
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.filteredCategories = [...this.categories];
+    // Get the category name from query parameters
+    this.route.queryParams.subscribe(params => {
+      this.selectedCategoryName = params['categoryname'] || '';
+
+      if (this.selectedCategoryName) {
+        // Filter categories to show only the selected one
+        this.filteredCategories = this.categories.filter(category =>
+          category.name.toLowerCase() === this.selectedCategoryName
+        );
+      } else {
+        // Show all categories if no specific category is selected
+        this.filteredCategories = [...this.categories];
+      }
+    });
   }
 
   onSearch(event: any) {
     const query = event.target.value.toLowerCase();
+    const baseCategories = this.selectedCategoryName ?
+      this.categories.filter(category => category.name.toLowerCase() === this.selectedCategoryName) :
+      this.categories;
+
     if (query.trim() === '') {
-      this.filteredCategories = [...this.categories];
+      this.filteredCategories = [...baseCategories];
     } else {
-      this.filteredCategories = this.categories.filter(category =>
+      this.filteredCategories = baseCategories.filter(category =>
         category.name.toLowerCase().includes(query) ||
         category.description.toLowerCase().includes(query)
       );

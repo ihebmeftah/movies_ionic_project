@@ -78,8 +78,11 @@ ion-content {
 .categories-scroll {
   display: flex;
   overflow-x: auto;
-  gap: 10px;
-  padding-bottom: 10px;
+  gap: 12px;
+  padding: 5px 0 15px 0;
+  margin: 0 -5px;
+  padding-left: 5px;
+  padding-right: 5px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -88,15 +91,46 @@ ion-content {
   .category-chip {
     --background: white;
     border: 2px solid #e0e0e0;
-    border-radius: 20px;
-    padding: 8px 16px;
+    border-radius: 25px;
+    padding: 10px 20px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    min-width: fit-content;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+      );
+      transition: left 0.5s;
+    }
+
+    &:hover::before {
+      left: 100%;
+    }
 
     ion-icon {
-      margin-right: 5px;
-      font-size: 18px;
+      margin-right: 8px;
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+
+    ion-label {
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
 
     &.active {
@@ -106,6 +140,8 @@ ion-content {
         var(--ion-color-secondary) 100%
       );
       border-color: var(--ion-color-primary);
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(var(--ion-color-primary-rgb), 0.3);
 
       ion-icon,
       ion-label {
@@ -115,6 +151,8 @@ ion-content {
 
     &:not(.active):hover {
       border-color: var(--ion-color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
   }
 }
@@ -310,6 +348,331 @@ ion-content {
             font-weight: 600;
             color: white;
           }
+        }
+      }
+    }
+  }
+}
+
+// Users Section Styles
+.users-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 5px 0 15px 0;
+  margin: 0 -5px;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .user-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 15px;
+    padding: 12px 15px;
+    min-width: 200px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 1px solid #f0f0f0;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .user-avatar {
+      position: relative;
+      margin-right: 12px;
+
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #e0e0e0;
+        transition: all 0.3s ease;
+      }
+
+      .online-indicator {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        border: 2px solid white;
+        transition: all 0.3s ease;
+
+        &.online {
+          background: #4caf50;
+          animation: pulse 2s infinite;
+        }
+      }
+    }
+
+    .user-info {
+      flex: 1;
+      min-width: 0;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+        margin: 0 0 4px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      p {
+        font-size: 12px;
+        color: var(--ion-color-medium);
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .follow-btn {
+      --padding-start: 8px;
+      --padding-end: 8px;
+      --color: var(--ion-color-primary);
+      margin: 0;
+      min-width: 35px;
+      height: 35px;
+
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+// Actors Section Styles
+.actors-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 5px 0 15px 0;
+  margin: 0 -5px;
+  padding-left: 5px;
+  padding-right: 5px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .actor-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    min-width: 160px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 1px solid #f0f0f0;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .actor-image {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .actor-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        background: linear-gradient(
+          to bottom right,
+          rgba(0, 0, 0, 0.3),
+          transparent
+        );
+
+        .favorite-btn {
+          --padding-start: 0;
+          --padding-end: 0;
+          margin: 0;
+          width: 35px;
+          height: 35px;
+
+          ion-icon {
+            font-size: 20px;
+            color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+
+            &.favorite-active {
+              color: #ff4757;
+            }
+          }
+        }
+      }
+
+      &:hover img {
+        transform: scale(1.05);
+      }
+    }
+
+    .actor-info {
+      padding: 12px;
+
+      h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+        margin: 0 0 6px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      p {
+        font-size: 11px;
+        color: var(--ion-color-medium);
+        margin: 0 0 8px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .actor-rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        ion-icon {
+          font-size: 12px;
+          color: #ffd700;
+        }
+
+        span {
+          font-size: 11px;
+          font-weight: 600;
+          color: var(--ion-color-dark);
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+// Mobile Responsiveness
+@media (max-width: 768px) {
+  .section-container {
+    padding: 0 15px;
+    margin-bottom: 25px;
+  }
+
+  .categories-scroll {
+    gap: 10px;
+    padding: 5px 0 12px 0;
+
+    .category-chip {
+      padding: 8px 16px;
+      border-radius: 20px;
+
+      ion-icon {
+        font-size: 18px;
+        margin-right: 6px;
+      }
+
+      ion-label {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .users-scroll {
+    gap: 12px;
+
+    .user-card {
+      min-width: 180px;
+      padding: 10px 12px;
+
+      .user-avatar {
+        img {
+          width: 40px;
+          height: 40px;
+        }
+
+        .online-indicator {
+          width: 10px;
+          height: 10px;
+        }
+      }
+
+      .user-info {
+        h4 {
+          font-size: 13px;
+        }
+
+        p {
+          font-size: 11px;
+        }
+      }
+
+      .follow-btn {
+        min-width: 30px;
+        height: 30px;
+
+        ion-icon {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  .actors-scroll {
+    gap: 12px;
+
+    .actor-card {
+      min-width: 140px;
+
+      .actor-image {
+        height: 180px;
+      }
+
+      .actor-info {
+        padding: 10px;
+
+        h4 {
+          font-size: 13px;
+        }
+
+        p {
+          font-size: 10px;
         }
       }
     }
