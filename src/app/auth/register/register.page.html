@@ -11,70 +11,124 @@
     <div class="form-section">
       <ion-card class="register-card">
         <ion-card-content>
-          <!-- Profile Picture Section -->
-          <div class="profile-picture-section">
-            <div class="profile-image-container" (click)="selectImageSource()">
-              <ion-avatar class="profile-avatar">
-                <img *ngIf="profileImage" [src]="profileImage" alt="Profile Picture" />
-                <ion-icon *ngIf="!profileImage" name="person-outline" class="placeholder-icon">
-                </ion-icon>
-              </ion-avatar>
-              <div class="camera-badge">
-                <ion-icon name="camera"></ion-icon>
+          <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" [class.form-submitted]="formSubmitted">
+            <!-- Profile Picture Section -->
+            <div class="profile-picture-section">
+              <div class="profile-image-container" (click)="selectImageSource()">
+                <ion-avatar class="profile-avatar">
+                  @if (profileImage) {
+                  <img [src]="profileImage" alt="Profile Picture" />
+
+
+                  }
+                  @else {
+                  <ion-icon name="person-outline" class="placeholder-icon">
+                  </ion-icon> }
+
+                </ion-avatar>
+                <div class="camera-badge">
+                  <ion-icon name="camera"></ion-icon>
+                </div>
               </div>
+              <p class="image-hint">Tap to add profile picture</p>
             </div>
-            <p class="image-hint">Tap to add profile picture</p>
-          </div>
 
-          <!-- Full Name Input -->
-          <ion-item lines="none" class="input-item">
-            <ion-icon name="person-outline" slot="start"></ion-icon>
-            <ion-input type="text" placeholder="Full Name" [(ngModel)]="fullName" class="custom-input">
-            </ion-input>
-          </ion-item>
+            <!-- Full Name Input -->
+            <ion-item lines="none" class="input-item">
+              <ion-icon name="person-outline" slot="start"></ion-icon>
+              <ion-input type="text" placeholder="Full Name" name="fullName" [(ngModel)]="fullName"
+                #fullNameInput="ngModel" required minlength="2" class="custom-input">
+              </ion-input>
+            </ion-item>
+            <!-- Full Name Validation Messages -->
+            <div class="error-message" *ngIf="fullNameInput.invalid && formSubmitted">
+              <ion-text color="danger">
+                <small *ngIf="fullNameInput.errors?.['required']">Full name is required</small>
+                <small *ngIf="fullNameInput.errors?.['minlength']">Full name must be at least 2 characters</small>
+              </ion-text>
+            </div>
 
-          <!-- Email Input -->
-          <ion-item lines="none" class="input-item">
-            <ion-icon name="mail-outline" slot="start"></ion-icon>
-            <ion-input type="email" placeholder="Email" [(ngModel)]="email" class="custom-input">
-            </ion-input>
-          </ion-item>
+            <!-- Email Input -->
+            <ion-item lines="none" class="input-item">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              <ion-input type="email" placeholder="Email" name="email" [(ngModel)]="email" #emailInput="ngModel"
+                required email class="custom-input">
+              </ion-input>
+            </ion-item>
+            <!-- Email Validation Messages -->
+            <div class="error-message" *ngIf="emailInput.invalid && formSubmitted">
+              <ion-text color="danger">
+                <small *ngIf="emailInput.errors?.['required']">Email is required</small>
+                <small *ngIf="emailInput.errors?.['email']">Please enter a valid email</small>
+              </ion-text>
+            </div>
 
-          <!-- Password Input -->
-          <ion-item lines="none" class="input-item">
-            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-            <ion-input [type]="passwordType" placeholder="Password" [(ngModel)]="password" class="custom-input">
-            </ion-input>
-            <ion-icon [name]="passwordIcon" slot="end" (click)="togglePassword()" class="password-toggle">
-            </ion-icon>
-          </ion-item>
+            <!-- Password Input -->
+            <ion-item lines="none" class="input-item">
+              <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+              <ion-input [type]="passwordType" placeholder="Password" name="password" [(ngModel)]="password"
+                #passwordInput="ngModel" required minlength="6" class="custom-input">
+              </ion-input>
+              <ion-icon [name]="passwordIcon" slot="end" (click)="togglePassword()" class="password-toggle">
+              </ion-icon>
+            </ion-item>
+            <!-- Password Validation Messages -->
+            <div class="error-message" *ngIf="passwordInput.invalid && formSubmitted">
+              <ion-text color="danger">
+                <small *ngIf="passwordInput.errors?.['required']">Password is required</small>
+                <small *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters</small>
+              </ion-text>
+            </div>
 
-          <!-- Confirm Password Input -->
-          <ion-item lines="none" class="input-item">
-            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-            <ion-input [type]="confirmPasswordType" placeholder="Confirm Password" [(ngModel)]="confirmPassword"
-              class="custom-input">
-            </ion-input>
-            <ion-icon [name]="confirmPasswordIcon" slot="end" (click)="toggleConfirmPassword()" class="password-toggle">
-            </ion-icon>
-          </ion-item>
+            <!-- Confirm Password Input -->
+            <ion-item lines="none" class="input-item">
+              <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+              <ion-input [type]="confirmPasswordType" placeholder="Confirm Password" name="confirmPassword"
+                [(ngModel)]="confirmPassword" #confirmPasswordInput="ngModel" required class="custom-input">
+              </ion-input>
+              <ion-icon [name]="confirmPasswordIcon" slot="end" (click)="toggleConfirmPassword()"
+                class="password-toggle">
+              </ion-icon>
+            </ion-item>
+            <!-- Confirm Password Validation Messages -->
+            <div class="error-message" *ngIf="confirmPasswordInput.invalid && formSubmitted">
+              <ion-text color="danger">
+                <small *ngIf="confirmPasswordInput.errors?.['required']">Please confirm your password</small>
+              </ion-text>
+            </div>
+            <!-- Password Match Validation -->
+            <div class="error-message"
+              *ngIf="password && confirmPassword && password !== confirmPassword && formSubmitted">
+              <ion-text color="danger">
+                <small>Passwords do not match</small>
+              </ion-text>
+            </div>
 
-          <!-- Terms and Conditions -->
-          <ion-item lines="none" class="terms-item">
-            <ion-checkbox slot="start" [(ngModel)]="acceptTerms" class="terms-checkbox">
-            </ion-checkbox>
-            <ion-label class="terms-label">
-              <small>
-                I agree to the
-                <ion-text color="primary">Terms & Conditions</ion-text>
-              </small>
-            </ion-label>
-          </ion-item>
+            <!-- Terms and Conditions -->
+            <ion-item lines="none" class="terms-item">
+              <ion-checkbox slot="start" name="acceptTerms" [(ngModel)]="acceptTerms" #termsInput="ngModel" required
+                class="terms-checkbox">
+              </ion-checkbox>
+              <ion-label class="terms-label">
+                <small>
+                  I agree to the
+                  <ion-text color="primary">Terms & Conditions</ion-text>
+                </small>
+              </ion-label>
+            </ion-item>
+            <!-- Terms Validation Messages -->
+            <div class="error-message" *ngIf="termsInput.invalid && formSubmitted">
+              <ion-text color="danger">
+                <small>You must accept the terms and conditions</small>
+              </ion-text>
+            </div>
 
-          <!-- Register Button -->
-          <ion-button expand="block" shape="round" class="register-button" (click)="onRegister()">
-            Create Account
-          </ion-button>
+            <!-- Register Button -->
+            <ion-button expand="block" shape="round" class="register-button" type="submit"
+              [disabled]="registerForm.invalid || password !== confirmPassword">
+              Create Account
+            </ion-button>
+          </form>
 
           <!-- Divider -->
           <div class="divider">

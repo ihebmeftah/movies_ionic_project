@@ -137,15 +137,71 @@
 
 .error-message {
   padding: 4px 16px 12px 16px;
+  animation: slideDown 0.3s ease-out;
 
   small {
     font-size: 12px;
     display: block;
+    color: var(--ion-color-danger);
+    font-weight: 500;
   }
 }
 
-.input-item.ion-invalid {
-  --background: rgba(var(--ion-color-danger-rgb), 0.1);
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.input-item.ion-invalid.ion-touched {
+  --background: rgba(var(--ion-color-danger-rgb), 0.05);
   --border-color: var(--ion-color-danger);
-  border: 1px solid var(--ion-color-danger);
+  border: 2px solid var(--ion-color-danger);
+  border-radius: 12px;
+  box-shadow: 0 0 0 3px rgba(var(--ion-color-danger-rgb), 0.1);
+  transition: all 0.3s ease;
+
+  ion-icon {
+    color: var(--ion-color-danger) !important;
+  }
+
+  .custom-input {
+    color: var(--ion-color-danger);
+  }
+}
+
+.input-item.ion-valid.ion-touched {
+  --background: rgba(var(--ion-color-success-rgb), 0.05);
+  --border-color: var(--ion-color-success);
+  border: 2px solid var(--ion-color-success);
+  border-radius: 12px;
+  box-shadow: 0 0 0 3px rgba(var(--ion-color-success-rgb), 0.1);
+  transition: all 0.3s ease;
+
+  ion-icon {
+    color: var(--ion-color-success) !important;
+  }
+}
+
+// Error styling when form is submitted
+.form-submitted .input-item.ion-invalid {
+  --background: rgba(var(--ion-color-danger-rgb), 0.05);
+  --border-color: var(--ion-color-danger);
+  border: 2px solid var(--ion-color-danger);
+  border-radius: 12px;
+  box-shadow: 0 0 0 3px rgba(var(--ion-color-danger-rgb), 0.1);
+  transition: all 0.3s ease;
+
+  ion-icon {
+    color: var(--ion-color-danger) !important;
+  }
+
+  .custom-input {
+    color: var(--ion-color-danger);
+  }
 }

@@ -24,6 +24,7 @@ export class RegisterPage implements OnInit {
   confirmPasswordIcon: string = 'eye-off';
   acceptTerms: boolean = false;
   profileImage: string | undefined;
+  formSubmitted: boolean = false;
 
   constructor(
     private router: Router,
@@ -82,22 +83,20 @@ export class RegisterPage implements OnInit {
     await actionSheet.present();
   }
 
-  onRegister() {
-    if (this.password !== this.confirmPassword) {
-      console.error('Passwords do not match!');
-      return;
+  onRegister(form: any) {
+    this.formSubmitted = true;
+
+    if (form.valid && this.password === this.confirmPassword && this.acceptTerms) {
+      console.log('Register attempt:', {
+        fullName: this.fullName,
+        email: this.email,
+        password: this.password,
+        profileImage: this.profileImage
+      });
+      this.router.navigate(['/tabs/home']);
+    } else {
+      console.log('Form is invalid or passwords do not match or terms not accepted');
     }
-    if (!this.acceptTerms) {
-      console.error('Please accept terms and conditions!');
-      return;
-    }
-    console.log('Register attempt:', {
-      fullName: this.fullName,
-      email: this.email,
-      password: this.password,
-      profileImage: this.profileImage
-    });
-    this.router.navigate(['/tabs/home']);
   }
 
   goToLogin() {

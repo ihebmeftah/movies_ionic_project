@@ -17,6 +17,7 @@ export class LoginPage implements OnInit {
   password: string = '';
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
+  formSubmitted: boolean = false;
 
   constructor(private router: Router) { }
 
@@ -28,9 +29,15 @@ export class LoginPage implements OnInit {
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
   }
 
-  onLogin() {
-    console.log('Login attempt:', { email: this.email, password: this.password });
-    this.router.navigate(['/tabs/home']);
+  onLogin(form: any) {
+    this.formSubmitted = true;
+
+    if (form.valid) {
+      console.log('Login attempt:', { email: this.email, password: this.password });
+      this.router.navigate(['/tabs/home']);
+    } else {
+      console.log('Form is invalid');
+    }
   }
 
   goToRegister() {
