@@ -1,0 +1,147 @@
+ion-content {
+  --background: #f8f9fa;
+}
+
+.custom-header {
+  ion-toolbar {
+    --background: linear-gradient(
+      135deg,
+      var(--ion-color-primary) 0%,
+      var(--ion-color-secondary) 100%
+    );
+    --color: white;
+
+    ion-title {
+      font-weight: 700;
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  padding: 40px;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 120px;
+    color: var(--ion-color-medium);
+    opacity: 0.3;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+    margin: 0 0 10px 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+.favorites-grid {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+
+  .movie-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .movie-poster {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .movie-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+
+        .remove-btn {
+          --padding-start: 0;
+          --padding-end: 0;
+          margin: 0;
+          width: 40px;
+          height: 40px;
+
+          ion-icon {
+            font-size: 28px;
+            color: #ff4757;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+          }
+        }
+      }
+
+      .rating-badge {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        padding: 5px 10px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        ion-icon {
+          font-size: 14px;
+          color: #ffd700;
+        }
+
+        span {
+          font-size: 12px;
+          font-weight: 600;
+          color: white;
+        }
+      }
+    }
+
+    .movie-info {
+      padding: 12px;
+
+      h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+        margin: 0 0 5px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      p {
+        font-size: 12px;
+        color: var(--ion-color-medium);
+        margin: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+
+  .social-btn {
+    --border-width: 2px;
+    --border-color: #e0e0e0;
+    --border-radius: 10%;
+
+    ion-icon {
+      font-size: 24px;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .social-buttons {
+    .social-btn {
+      --border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}

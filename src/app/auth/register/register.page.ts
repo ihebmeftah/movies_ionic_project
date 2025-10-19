@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule, ActionSheetController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { SocialButtonsComponent } from '../../components/social-button-component/social-buttons.component';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, SocialButtonsComponent]
 })
 export class RegisterPage implements OnInit {
   fullName: string = '';
@@ -96,12 +97,25 @@ export class RegisterPage implements OnInit {
       password: this.password,
       profileImage: this.profileImage
     });
-    // Add your registration logic here
-    // For now, navigate to home
-    this.router.navigate(['/home']);
+    this.router.navigate(['/tabs/home']);
   }
 
   goToLogin() {
     this.router.navigate(['/auth/login']);
+  }
+
+  onGoogleSignup() {
+    console.log('Google signup clicked');
+    // Implement Google signup logic here
+  }
+
+  onFacebookSignup() {
+    console.log('Facebook signup clicked');
+    // Implement Facebook signup logic here
+  }
+
+  onAppleSignup() {
+    console.log('Apple signup clicked');
+    // Implement Apple signup logic here
   }
 }

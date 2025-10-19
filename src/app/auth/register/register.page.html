@@ -82,17 +82,9 @@
           </div>
 
           <!-- Social Signup Buttons -->
-          <div class="social-buttons">
-            <ion-button fill="outline" shape="round" class="social-btn">
-              <ion-icon name="logo-google"></ion-icon>
-            </ion-button>
-            <ion-button fill="outline" shape="round" class="social-btn">
-              <ion-icon name="logo-facebook"></ion-icon>
-            </ion-button>
-            <ion-button fill="outline" shape="round" class="social-btn">
-              <ion-icon name="logo-apple"></ion-icon>
-            </ion-button>
-          </div>
+          <app-social-buttons (googleClick)="onGoogleSignup()" (facebookClick)="onFacebookSignup()"
+            (appleClick)="onAppleSignup()">
+          </app-social-buttons>
         </ion-card-content>
       </ion-card>
 

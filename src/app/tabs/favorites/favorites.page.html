@@ -1,0 +1,36 @@
+<ion-header [translucent]="true" class="custom-header">
+  <ion-toolbar>
+    <ion-title>My Favorites</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Empty State -->
+  <div *ngIf="favoriteMovies.length === 0" class="empty-state">
+    <ion-icon name="heart-outline" class="empty-icon"></ion-icon>
+    <h2>No Favorites Yet</h2>
+    <p>Start adding movies to your favorites list</p>
+  </div>
+
+  <!-- Favorites Grid -->
+  <div *ngIf="favoriteMovies.length > 0" class="favorites-grid">
+    <div *ngFor="let movie of favoriteMovies" class="movie-card">
+      <div class="movie-poster">
+        <img [src]="movie.poster" [alt]="movie.title" />
+        <div class="movie-overlay">
+          <ion-button fill="clear" class="remove-btn" (click)="removeFavorite(movie)">
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+        </div>
+        <div class="rating-badge">
+          <ion-icon name="star"></ion-icon>
+          <span>{{ movie.rating }}</span>
+        </div>
+      </div>
+      <div class="movie-info">
+        <h3>{{ movie.title }}</h3>
+        <p>{{ movie.genre }} • {{ movie.year }}</p>
+      </div>
+    </div>
+  </div>
+</ion-content>

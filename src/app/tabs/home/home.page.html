@@ -1,0 +1,91 @@
+<ion-content [fullscreen]="true">
+  <!-- Header Section -->
+  <div class="home-header">
+    <div class="header-content">
+      <div class="greeting-section">
+        <h1>Discover</h1>
+        <p>Find your favorite movies</p>
+      </div>
+      <ion-icon name="notifications-outline" class="notification-icon"></ion-icon>
+    </div>
+
+    <!-- Search Bar -->
+    <ion-searchbar class="custom-searchbar" placeholder="Search movies..." animated="true" [(ngModel)]="searchQuery"
+      (ionInput)="onSearch($event)">
+    </ion-searchbar>
+  </div>
+
+  <!-- Categories Section -->
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Categories</h2>
+      <ion-text color="primary" class="see-all" (click)="goToCategories()">See All</ion-text>
+    </div>
+
+    <div class="categories-scroll">
+      <ion-chip *ngFor="let category of categories" [class.active]="category.active" (click)="selectCategory(category)"
+        class="category-chip">
+        <ion-icon [name]="category.icon"></ion-icon>
+        <ion-label>{{ category.name }}</ion-label>
+      </ion-chip>
+    </div>
+  </div>
+
+  <!-- Top Movies Section -->
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Top Movies</h2>
+      <ion-text color="primary" class="see-all">See All</ion-text>
+    </div>
+
+    <div class="movies-grid">
+      <div *ngFor="let movie of topMovies" class="movie-card">
+        <div class="movie-poster">
+          <img [src]="movie.poster" [alt]="movie.title" />
+          <div class="movie-overlay">
+            <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie)">
+              <ion-icon [name]="movie.isFavorite ? 'heart' : 'heart-outline'"
+                [class.favorite-active]="movie.isFavorite">
+              </ion-icon>
+            </ion-button>
+          </div>
+          <div class="rating-badge">
+            <ion-icon name="star"></ion-icon>
+            <span>{{ movie.rating }}</span>
+          </div>
+        </div>
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <p>{{ movie.genre }} • {{ movie.year }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trending Section -->
+  <div class="section-container">
+    <div class="section-header">
+      <h2>Trending Now</h2>
+      <ion-text color="primary" class="see-all">See All</ion-text>
+    </div>
+
+    <div class="trending-scroll">
+      <div *ngFor="let movie of trendingMovies" class="trending-card">
+        <img [src]="movie.poster" [alt]="movie.title" />
+        <div class="trending-overlay">
+          <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie)">
+            <ion-icon [name]="movie.isFavorite ? 'heart' : 'heart-outline'" [class.favorite-active]="movie.isFavorite">
+            </ion-icon>
+          </ion-button>
+          <div class="trending-info">
+            <h4>{{ movie.title }}</h4>
+            <div class="rating">
+              <ion-icon name="star"></ion-icon>
+              <span>{{ movie.rating }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,46 @@
+<ion-header [translucent]="true" class="custom-header">
+  <ion-toolbar>
+    <ion-title>All Movies</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="options-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Search and Filter Section -->
+  <div class="search-section">
+    <ion-searchbar class="custom-searchbar" placeholder="Search movies..." animated="true" [(ngModel)]="searchQuery">
+    </ion-searchbar>
+  </div>
+
+  <!-- Movies List -->
+  <div class="movies-list">
+    <div *ngFor="let movie of moviesList" class="movie-item">
+      <div class="movie-poster">
+        <img [src]="movie.poster" [alt]="movie.title" />
+      </div>
+      <div class="movie-details">
+        <h3>{{ movie.title }}</h3>
+        <p class="genre">{{ movie.genre }} • {{ movie.year }}</p>
+        <div class="rating-row">
+          <div class="rating">
+            <ion-icon name="star"></ion-icon>
+            <span>{{ movie.rating }}</span>
+          </div>
+          <div class="duration">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ movie.duration }}</span>
+          </div>
+        </div>
+        <p class="description">{{ movie.description }}</p>
+      </div>
+      <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie)">
+        <ion-icon [name]="movie.isFavorite ? 'heart' : 'heart-outline'" [class.favorite-active]="movie.isFavorite">
+        </ion-icon>
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
