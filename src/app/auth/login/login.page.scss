@@ -42,7 +42,7 @@
   }
 
   .input-item {
-    --background: #f5f5f5;
+    --background: var(--ion-item-background, #f5f5f5);
     --border-radius: 12px;
     --padding-start: 16px;
     --padding-end: 16px;

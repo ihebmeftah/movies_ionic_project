@@ -1,5 +1,5 @@
 ion-content {
-  --background: #f8f9fa;
+  --background: var(--ion-background-color, #f8f9fa);
 }
 
 .custom-header {
@@ -82,7 +82,7 @@ ion-content {
   }
 
   .category-card {
-    background: white;
+    background: var(--ion-card-background, white);
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);

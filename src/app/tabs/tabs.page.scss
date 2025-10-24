@@ -1,8 +1,9 @@
 .custom-tab-bar {
-  --background: #ffffff;
-  border-top: 1px solid #e0e0e0;
+  /* use themed tab-bar surface so light/dark modes match other cards */
+  --background: var(--ion-tab-bar-background, var(--ion-card-background));
+  border-top: 1px solid var(--ion-toolbar-border-color, #e0e0e0);
   padding: 8px 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: none; /* remove elevation */
 
   .tab-button {
     --color: var(--ion-color-medium);

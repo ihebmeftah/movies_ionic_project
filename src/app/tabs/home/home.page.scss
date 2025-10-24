@@ -1,5 +1,5 @@
 ion-content {
-  --background: #f8f9fa;
+  --background: var(--ion-background-color, #f8f9fa);
 }
 
 .home-header {
@@ -89,7 +89,7 @@ ion-content {
   }
 
   .category-chip {
-    --background: white;
+    --background: var(--ion-item-background, white);
     border: 2px solid #e0e0e0;
     border-radius: 25px;
     padding: 10px 20px;
@@ -163,7 +163,7 @@ ion-content {
   gap: 15px;
 
   .movie-card {
-    background: white;
+    background: var(--ion-card-background, white);
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -371,7 +371,7 @@ ion-content {
   .user-card {
     display: flex;
     align-items: center;
-    background: white;
+    background: var(--ion-card-background, white);
     border-radius: 15px;
     padding: 12px 15px;
     min-width: 200px;
@@ -470,7 +470,7 @@ ion-content {
   }
 
   .actor-card {
-    background: white;
+    background: var(--ion-card-background, white);
     border-radius: 15px;
     overflow: hidden;
     min-width: 160px;
