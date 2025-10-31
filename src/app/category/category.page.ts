@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CategoriesService, Genre } from '../services/categories.service';
 
 interface Category {
   id: number;
   name: string;
   icon: string;
-  image: string;
   description: string;
-  movieCount: number;
   color: string;
 }
 
@@ -21,136 +20,76 @@ export class CategoryPage implements OnInit {
   searchQuery: string = '';
   selectedCategoryName: string = '';
 
-  categories: Category[] = [
-    {
-      id: 1,
-      name: 'Action',
-      icon: 'flash',
-      image: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
-      description: 'Explosive thrills and intense sequences',
-      movieCount: 245,
-      color: '#FF6B6B'
-    },
-    {
-      id: 2,
-      name: 'Comedy',
-      icon: 'happy',
-      image: 'https://image.tmdb.org/t/p/w500/xvx4Yhf0DVH8G4LzNISpMfFBDy2.jpg',
-      description: 'Laugh out loud with the funniest films',
-      movieCount: 189,
-      color: '#FFD93D'
-    },
-    {
-      id: 3,
-      name: 'Drama',
-      icon: 'film',
-      image: 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg',
-      description: 'Powerful stories and emotional journeys',
-      movieCount: 312,
-      color: '#6C5CE7'
-    },
-    {
-      id: 4,
-      name: 'Horror',
-      icon: 'skull',
-      image: 'https://image.tmdb.org/t/p/w500/vzmL6fP7aPKNKPRTFnZmiUfciyV.jpg',
-      description: 'Spine-chilling tales and scary moments',
-      movieCount: 156,
-      color: '#2D3436'
-    },
-    {
-      id: 5,
-      name: 'Sci-Fi',
-      icon: 'rocket',
-      image: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-      description: 'Explore futuristic worlds and technology',
-      movieCount: 198,
-      color: '#00B894'
-    },
-    {
-      id: 6,
-      name: 'Romance',
-      icon: 'heart',
-      image: 'https://image.tmdb.org/t/p/w500/kEl2t3OhXc3Zb9FBh1AuYzRTgZp.jpg',
-      description: 'Love stories that touch your heart',
-      movieCount: 167,
-      color: '#FD79A8'
-    },
-    {
-      id: 7,
-      name: 'Thriller',
-      icon: 'eye',
-      image: 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg',
-      description: 'Suspenseful plots that keep you guessing',
-      movieCount: 234,
-      color: '#0984E3'
-    },
-    {
-      id: 8,
-      name: 'Animation',
-      icon: 'color-palette',
-      image: 'https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg',
-      description: 'Animated adventures for all ages',
-      movieCount: 143,
-      color: '#FF7675'
-    },
-    {
-      id: 9,
-      name: 'Adventure',
-      icon: 'compass',
-      image: 'https://image.tmdb.org/t/p/w500/ty8TGRuvJLPUmAR1H1nRIsgwvim.jpg',
-      description: 'Epic quests and exciting expeditions',
-      movieCount: 221,
-      color: '#FDCB6E'
-    },
-    {
-      id: 10,
-      name: 'Fantasy',
-      icon: 'sparkles',
-      image: 'https://image.tmdb.org/t/p/w500/6EiRUJpuoeQPghrs3YNd6Y2kLdt.jpg',
-      description: 'Magical worlds and mythical creatures',
-      movieCount: 176,
-      color: '#A29BFE'
-    },
-    {
-      id: 11,
-      name: 'Crime',
-      icon: 'finger-print',
-      image: 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg',
-      description: 'Criminal masterminds and investigations',
-      movieCount: 187,
-      color: '#636E72'
-    },
-    {
-      id: 12,
-      name: 'Documentary',
-      icon: 'videocam',
-      image: 'https://image.tmdb.org/t/p/w500/yDHYTfA3R0jFYba16jBB1ef8oIt.jpg',
-      description: 'Real stories from the real world',
-      movieCount: 124,
-      color: '#74B9FF'
-    }
-  ];
-
+  categories: Category[] = [];
   filteredCategories: Category[] = [];
 
-  constructor(private route: ActivatedRoute) { }
+  // Default color palette for categories
+  private colorPalette = [
+    '#FF6B6B', '#FFD93D', '#6C5CE7', '#2D3436', '#00B894',
+    '#FD79A8', '#0984E3', '#FF7675', '#FDCB6E', '#A29BFE',
+    '#636E72', '#74B9FF', '#55EFC4', '#FFEAA7', '#DFE6E9',
+    '#B2BEC3', '#F368E0', '#48DBFB', '#FF9FF3', '#54A0FF'
+  ];
+
+  constructor(
+    private route: ActivatedRoute,
+    private categoriesService: CategoriesService
+  ) { }
 
   ngOnInit() {
+    // Fetch categories from TMDB API
+    this.loadCategories();
+
     // Get the category name from query parameters
     this.route.queryParams.subscribe(params => {
       this.selectedCategoryName = params['categoryname'] || '';
+      this.applyFilters();
+    });
+  }
 
-      if (this.selectedCategoryName) {
-        // Filter categories to show only the selected one
-        this.filteredCategories = this.categories.filter(category =>
-          category.name.toLowerCase() === this.selectedCategoryName
-        );
-      } else {
-        // Show all categories if no specific category is selected
-        this.filteredCategories = [...this.categories];
+  /**
+   * Load categories from TMDB API
+   */
+  private loadCategories() {
+    this.categoriesService.getMovieCategories().subscribe({
+      next: (response) => {
+        console.log('Categories loaded from TMDB:', response.genres);
+
+        // Map API data to category format with dynamic colors
+        this.categories = response.genres.map((genre, index) => {
+          return {
+            id: genre.id,
+            name: genre.name,
+            icon: 'film-outline',
+            description: `Explore ${genre.name} movies`,
+            color: this.colorPalette[index % this.colorPalette.length]
+          };
+        });
+
+        this.applyFilters();
+      },
+      error: (error) => {
+        console.error('Error loading categories:', error);
+        // Fallback to empty array or show error message
+        this.categories = [];
+        this.filteredCategories = [];
       }
     });
+  }
+
+  /**
+   * Apply filters based on selected category
+   */
+  private applyFilters() {
+    if (this.selectedCategoryName) {
+      // Filter categories to show only the selected one
+      this.filteredCategories = this.categories.filter(category =>
+        category.name.toLowerCase() === this.selectedCategoryName.toLowerCase()
+      );
+    } else {
+      // Show all categories if no specific category is selected
+      this.filteredCategories = [...this.categories];
+    }
   }
 
   onSearch(event: any) {

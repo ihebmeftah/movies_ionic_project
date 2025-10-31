@@ -35,23 +35,14 @@
   <!-- Categories Grid -->
   <div class="categories-container">
     <div class="categories-grid">
-      <div *ngFor="let category of filteredCategories" class="category-card" (click)="selectCategory(category)">
-        <div class="category-image">
-          <img [src]="category.image" [alt]="category.name" />
-          <div class="category-overlay"
-            [style.background]="'linear-gradient(to bottom, transparent 0%, ' + category.color + 'CC 100%)'">
-            <div class="category-icon">
-              <ion-icon [name]="category.icon"></ion-icon>
-            </div>
+      <div *ngFor="let category of filteredCategories" class="category-card" (click)="selectCategory(category)"
+        [style.background]="category.color">
+        <div class="category-content">
+          <div class="category-icon">
+            <ion-icon [name]="category.icon"></ion-icon>
           </div>
-        </div>
-        <div class="category-info">
           <h3>{{ category.name }}</h3>
           <p class="description">{{ category.description }}</p>
-          <div class="movie-count">
-            <ion-icon name="film-outline"></ion-icon>
-            <span>{{ category.movieCount }} movies</span>
-          </div>
         </div>
       </div>
     </div>
