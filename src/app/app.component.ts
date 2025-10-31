@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FirebaseConfigCheckerService } from './services/firebase-config-checker.service';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
   standalone: false,
 })
-export class AppComponent {
-  constructor() {}
+export class AppComponent implements OnInit {
+  constructor(
+    private firebaseChecker: FirebaseConfigCheckerService
+  ) { }
+
+  ngOnInit() {
+    // Check Firebase configuration on app startup
+    this.firebaseChecker.checkConfiguration();
+  }
 }

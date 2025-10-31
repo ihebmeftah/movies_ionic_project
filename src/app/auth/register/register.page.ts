@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, ActionSheetController } from '@ionic/angular';
+import { IonicModule, ActionSheetController, LoadingController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { SocialButtonsComponent } from '../../components/social-button-component/social-buttons.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +29,10 @@ export class RegisterPage implements OnInit {
 
   constructor(
     private router: Router,
-    private actionSheetController: ActionSheetController
+    private actionSheetController: ActionSheetController,
+    private authService: AuthService,
+    private loadingController: LoadingController,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -52,25 +56,33 @@ export class RegisterPage implements OnInit {
           text: 'Take Photo',
           icon: 'camera',
           handler: async () => {
-            const image = await Camera.getPhoto({
-              source: CameraSource.Camera,
-              quality: 90,
-              resultType: CameraResultType.DataUrl,
-            });
-            this.profileImage = image.dataUrl;
+            try {
+              const image = await Camera.getPhoto({
+                source: CameraSource.Camera,
+                quality: 90,
+                resultType: CameraResultType.DataUrl,
+              });
+              this.profileImage = image.dataUrl;
+            } catch (error) {
+              console.error('Camera error:', error);
+            }
           }
         },
         {
           text: 'Choose from Gallery',
           icon: 'images',
           handler: async () => {
-            const image = await Camera.getPhoto({
-              quality: 90,
-              allowEditing: true,
-              resultType: CameraResultType.DataUrl,
-              source: CameraSource.Photos
-            });
-            this.profileImage = image.dataUrl;
+            try {
+              const image = await Camera.getPhoto({
+                quality: 90,
+                allowEditing: true,
+                resultType: CameraResultType.DataUrl,
+                source: CameraSource.Photos
+              });
+              this.profileImage = image.dataUrl;
+            } catch (error) {
+              console.error('Gallery error:', error);
+            }
           }
         },
         {
@@ -83,19 +95,71 @@ export class RegisterPage implements OnInit {
     await actionSheet.present();
   }
 
-  onRegister(form: any) {
+  async onRegister(form: any) {
     this.formSubmitted = true;
 
-    if (form.valid && this.password === this.confirmPassword && this.acceptTerms) {
-      console.log('Register attempt:', {
-        fullName: this.fullName,
-        email: this.email,
-        password: this.password,
-        profileImage: this.profileImage
-      });
+    // Validation checks
+    if (!form.valid) {
+      this.showToast('Please fill in all required fields', 'warning');
+      return;
+    }
+
+    if (this.password !== this.confirmPassword) {
+      this.showToast('Passwords do not match', 'warning');
+      return;
+    }
+
+    if (!this.acceptTerms) {
+      this.showToast('Please accept the terms and conditions', 'warning');
+      return;
+    }
+
+    const loading = await this.loadingController.create({
+      message: 'Creating your account...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    try {
+      // Firebase Authentication Registration
+      const userCredential = await this.authService.register(
+        this.email,
+        this.password,
+        this.fullName
+      );
+
+      console.log('Registration successful:', userCredential.user);
+
+      // TODO: Upload profile image to Firebase Storage if provided
+      // if (this.profileImage) {
+      //   const userId = userCredential.user.uid;
+      //   await this.storageService.uploadBase64(`profile-photos/${userId}.jpg`, this.profileImage);
+      // }
+
+      await loading.dismiss();
+      await this.showToast('Account created successfully!', 'success');
+
+      // Navigate to home page on success
       this.router.navigate(['/tabs/home']);
-    } else {
-      console.log('Form is invalid or passwords do not match or terms not accepted');
+
+    } catch (error: any) {
+      await loading.dismiss();
+      console.error('Registration error:', error);
+
+      // Handle different Firebase error types
+      let errorMessage = 'Registration failed. Please try again.';
+
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'This email is already registered. Please login instead.';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address.';
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Password should be at least 6 characters.';
+      } else if (error.code === 'auth/operation-not-allowed') {
+        errorMessage = 'Email/password accounts are not enabled. Please contact support.';
+      }
+
+      await this.showToast(errorMessage, 'danger');
     }
   }
 
@@ -104,17 +168,25 @@ export class RegisterPage implements OnInit {
   }
 
   onGoogleSignup() {
-    console.log('Google signup clicked');
-    // Implement Google signup logic here
+    this.showToast('Google signup coming soon!', 'primary');
   }
 
   onFacebookSignup() {
-    console.log('Facebook signup clicked');
-    // Implement Facebook signup logic here
+    this.showToast('Facebook signup coming soon!', 'primary');
   }
 
   onAppleSignup() {
-    console.log('Apple signup clicked');
-    // Implement Apple signup logic here
+    this.showToast('Apple signup coming soon!', 'primary');
+  }
+
+  // Helper method to show toast messages
+  private async showToast(message: string, color: string = 'primary') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'top',
+      color
+    });
+    await toast.present();
   }
 }

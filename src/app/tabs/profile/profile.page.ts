@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { LoadingController, AlertController } from '@ionic/angular';
 
 interface UserProfile {
   name: string;
@@ -30,9 +32,25 @@ export class ProfilePage implements OnInit {
     }
   };
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private loadingController: LoadingController,
+    private alertController: AlertController
+  ) { }
 
   ngOnInit() {
+    this.loadUserProfile();
+  }
+
+  // Load user profile from Firebase Auth
+  loadUserProfile() {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      this.userProfile.email = user.email || 'user@example.com';
+      this.userProfile.name = user.displayName || 'User';
+      // You can load more data from Firestore here
+    }
   }
 
   navigateTo(page: string) {
@@ -40,10 +58,39 @@ export class ProfilePage implements OnInit {
     // Add navigation logic here
   }
 
-  logout() {
-    // Add logout logic here
-    console.log('Logging out...');
-    this.router.navigate(['/auth/login']);
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Logout',
+      message: 'Are you sure you want to logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Logout',
+          role: 'confirm',
+          handler: async () => {
+            const loading = await this.loadingController.create({
+              message: 'Logging out...',
+              spinner: 'crescent'
+            });
+            await loading.present();
+
+            try {
+              await this.authService.logout();
+              await loading.dismiss();
+              this.router.navigate(['/auth/login']);
+            } catch (error) {
+              await loading.dismiss();
+              console.error('Logout error:', error);
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
 
