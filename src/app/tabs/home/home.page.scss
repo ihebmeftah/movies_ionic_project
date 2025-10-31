@@ -75,6 +75,246 @@ ion-content {
   }
 }
 
+// Upcoming Movies Carousel
+.carousel-container {
+  padding: 0 20px;
+  margin-bottom: 30px;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ion-color-dark);
+      margin: 0;
+    }
+
+    .see-all {
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+
+  .carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    margin: 0 -20px;
+    padding: 0 20px;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 5px 0 15px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .carousel-item {
+    flex: 0 0 auto;
+    width: 280px;
+
+    @media (max-width: 768px) {
+      width: 240px;
+    }
+  }
+
+  .carousel-card {
+    background: var(--ion-card-background, white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .carousel-poster {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+
+      @media (max-width: 768px) {
+        height: 340px;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .carousel-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        background: linear-gradient(
+          to bottom right,
+          rgba(0, 0, 0, 0.3),
+          transparent
+        );
+
+        .favorite-btn {
+          --padding-start: 0;
+          --padding-end: 0;
+          margin: 0;
+          width: 40px;
+          height: 40px;
+
+          ion-icon {
+            font-size: 22px;
+            color: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+
+            &.favorite-active {
+              color: #ff4757;
+            }
+          }
+        }
+      }
+
+      .rating-badge {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 6px 12px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        ion-icon {
+          font-size: 14px;
+          color: #ffd700;
+        }
+
+        span {
+          font-size: 13px;
+          font-weight: 700;
+          color: white;
+        }
+      }
+    }
+
+    .carousel-info {
+      padding: 15px;
+
+      h3 {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--ion-color-dark);
+        margin: 0 0 8px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .genre-text {
+        font-size: 13px;
+        color: var(--ion-color-medium);
+        margin: 0 0 12px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .release-date-badge {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(
+          135deg,
+          var(--ion-color-primary) 0%,
+          var(--ion-color-secondary) 100%
+        );
+        padding: 10px 12px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(var(--ion-color-primary-rgb), 0.3);
+        animation: pulse-glow 2s ease-in-out infinite;
+
+        .date-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 8px;
+          backdrop-filter: blur(10px);
+
+          ion-icon {
+            font-size: 20px;
+            color: white;
+          }
+        }
+
+        .date-content {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          flex: 1;
+
+          .date-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .date-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+          }
+        }
+      }
+    }
+
+    &:hover {
+      .carousel-poster img {
+        transform: scale(1.05);
+      }
+
+      .carousel-info .release-date-badge {
+        transform: scale(1.02);
+        box-shadow: 0 5px 15px rgba(var(--ion-color-primary-rgb), 0.4);
+      }
+    }
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 3px 10px rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+  50% {
+    box-shadow: 0 3px 15px rgba(var(--ion-color-primary-rgb), 0.5);
+  }
+}
+
 .categories-scroll {
   display: flex;
   overflow-x: auto;
@@ -354,227 +594,6 @@ ion-content {
   }
 }
 
-// Users Section Styles
-.users-scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 15px;
-  padding: 5px 0 15px 0;
-  margin: 0 -5px;
-  padding-left: 5px;
-  padding-right: 5px;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  .user-card {
-    display: flex;
-    align-items: center;
-    background: var(--ion-card-background, white);
-    border-radius: 15px;
-    padding: 12px 15px;
-    min-width: 200px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    border: 1px solid #f0f0f0;
-
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    }
-
-    .user-avatar {
-      position: relative;
-      margin-right: 12px;
-
-      img {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #e0e0e0;
-        transition: all 0.3s ease;
-      }
-
-      .online-indicator {
-        position: absolute;
-        bottom: 2px;
-        right: 2px;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #e0e0e0;
-        border: 2px solid white;
-        transition: all 0.3s ease;
-
-        &.online {
-          background: #4caf50;
-          animation: pulse 2s infinite;
-        }
-      }
-    }
-
-    .user-info {
-      flex: 1;
-      min-width: 0;
-
-      h4 {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--ion-color-dark);
-        margin: 0 0 4px 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      p {
-        font-size: 12px;
-        color: var(--ion-color-medium);
-        margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-
-    .follow-btn {
-      --padding-start: 8px;
-      --padding-end: 8px;
-      --color: var(--ion-color-primary);
-      margin: 0;
-      min-width: 35px;
-      height: 35px;
-
-      ion-icon {
-        font-size: 18px;
-      }
-    }
-  }
-}
-
-// Actors Section Styles
-.actors-scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 15px;
-  padding: 5px 0 15px 0;
-  margin: 0 -5px;
-  padding-left: 5px;
-  padding-right: 5px;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  .actor-card {
-    background: var(--ion-card-background, white);
-    border-radius: 15px;
-    overflow: hidden;
-    min-width: 160px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    border: 1px solid #f0f0f0;
-
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .actor-image {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      overflow: hidden;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-      }
-
-      .actor-overlay {
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 10px;
-        background: linear-gradient(
-          to bottom right,
-          rgba(0, 0, 0, 0.3),
-          transparent
-        );
-
-        .favorite-btn {
-          --padding-start: 0;
-          --padding-end: 0;
-          margin: 0;
-          width: 35px;
-          height: 35px;
-
-          ion-icon {
-            font-size: 20px;
-            color: white;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-            transition: all 0.3s ease;
-
-            &.favorite-active {
-              color: #ff4757;
-            }
-          }
-        }
-      }
-
-      &:hover img {
-        transform: scale(1.05);
-      }
-    }
-
-    .actor-info {
-      padding: 12px;
-
-      h4 {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--ion-color-dark);
-        margin: 0 0 6px 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      p {
-        font-size: 11px;
-        color: var(--ion-color-medium);
-        margin: 0 0 8px 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .actor-rating {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-
-        ion-icon {
-          font-size: 12px;
-          color: #ffd700;
-        }
-
-        span {
-          font-size: 11px;
-          font-weight: 600;
-          color: var(--ion-color-dark);
-        }
-      }
-    }
-  }
-}
-
 // Animations
 @keyframes pulse {
   0% {
@@ -610,70 +629,6 @@ ion-content {
 
       ion-label {
         font-size: 13px;
-      }
-    }
-  }
-
-  .users-scroll {
-    gap: 12px;
-
-    .user-card {
-      min-width: 180px;
-      padding: 10px 12px;
-
-      .user-avatar {
-        img {
-          width: 40px;
-          height: 40px;
-        }
-
-        .online-indicator {
-          width: 10px;
-          height: 10px;
-        }
-      }
-
-      .user-info {
-        h4 {
-          font-size: 13px;
-        }
-
-        p {
-          font-size: 11px;
-        }
-      }
-
-      .follow-btn {
-        min-width: 30px;
-        height: 30px;
-
-        ion-icon {
-          font-size: 16px;
-        }
-      }
-    }
-  }
-
-  .actors-scroll {
-    gap: 12px;
-
-    .actor-card {
-      min-width: 140px;
-
-      .actor-image {
-        height: 180px;
-      }
-
-      .actor-info {
-        padding: 10px;
-
-        h4 {
-          font-size: 13px;
-        }
-
-        p {
-          font-size: 10px;
-        }
       }
     }
   }

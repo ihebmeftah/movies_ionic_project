@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MoviesService, Movie as TMDBMovie } from '../../services/movies.service';
 
 interface Category {
   name: string;
@@ -14,23 +15,7 @@ interface Movie {
   rating: number;
   genre: string;
   year: number;
-  isFavorite: boolean;
-}
-
-interface User {
-  id: number;
-  name: string;
-  avatar: string;
-  location: string;
-  isOnline: boolean;
-}
-
-interface Actor {
-  id: number;
-  name: string;
-  image: string;
-  knownFor: string;
-  rating: number;
+  releaseDate?: string;
   isFavorite: boolean;
 }
 
@@ -40,7 +25,7 @@ interface Actor {
   styleUrls: ['home.page.scss'],
   standalone: false,
 })
-export class HomePage {
+export class HomePage implements OnInit {
   searchQuery: string = '';
 
   categories: Category[] = [
@@ -52,157 +37,126 @@ export class HomePage {
     { name: 'Sci-Fi', icon: 'rocket', active: false },
   ];
 
-  topMovies: Movie[] = [
-    {
-      id: 1,
-      title: 'Inception',
-      poster: 'https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg',
-      rating: 8.8,
-      genre: 'Sci-Fi',
-      year: 2010,
-      isFavorite: false
-    },
-    {
-      id: 2,
-      title: 'The Dark Knight',
-      poster: 'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
-      rating: 9.0,
-      genre: 'Action',
-      year: 2008,
-      isFavorite: false
-    },
-    {
-      id: 3,
-      title: 'Interstellar',
-      poster: 'https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-      rating: 8.6,
-      genre: 'Sci-Fi',
-      year: 2014,
-      isFavorite: true
-    },
-    {
-      id: 4,
-      title: 'Pulp Fiction',
-      poster: 'https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg',
-      rating: 8.9,
-      genre: 'Crime',
-      year: 1994,
-      isFavorite: false
-    }
-  ];
+  topMovies: Movie[] = [];
+  trendingMovies: Movie[] = [];
+  upcomingMovies: Movie[] = [];
 
-  trendingMovies: Movie[] = [
-    {
-      id: 5,
-      title: 'Avatar',
-      poster: 'https://image.tmdb.org/t/p/w500/6EiRUJpuoeQPghrs3YNd6Y2kLdt.jpg',
-      rating: 7.8,
-      genre: 'Sci-Fi',
-      year: 2009,
-      isFavorite: false
-    },
-    {
-      id: 6,
-      title: 'The Matrix',
-      poster: 'https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg',
-      rating: 8.7,
-      genre: 'Sci-Fi',
-      year: 1999,
-      isFavorite: true
-    },
-    {
-      id: 7,
-      title: 'Gladiator',
-      poster: 'https://image.tmdb.org/t/p/w500/ty8TGRuvJLPUmAR1H1nRIsgwvim.jpg',
-      rating: 8.5,
-      genre: 'Action',
-      year: 2000,
-      isFavorite: false
-    }
-  ];
+  constructor(
+    private router: Router,
+    private moviesService: MoviesService
+  ) { }
 
-  users: User[] = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
-      location: 'New York',
-      isOnline: true
-    },
-    {
-      id: 2,
-      name: 'Mike Chen',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-      location: 'Los Angeles',
-      isOnline: true
-    },
-    {
-      id: 3,
-      name: 'Emma Wilson',
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
-      location: 'London',
-      isOnline: false
-    },
-    {
-      id: 4,
-      name: 'David Rodriguez',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
-      location: 'Madrid',
-      isOnline: true
-    },
-    {
-      id: 5,
-      name: 'Lisa Park',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
-      location: 'Seoul',
-      isOnline: true
-    }
-  ];
+  ngOnInit() {
+    this.loadTopRatedMovies();
+    this.loadTrendingMovies();
+    this.loadUpcomingMovies();
+  }
 
-  actors: Actor[] = [
-    {
-      id: 1,
-      name: 'Leonardo DiCaprio',
-      image: 'https://image.tmdb.org/t/p/w500/wo2hJp04iT5l3hZ8AcLio4kjiuq.jpg',
-      knownFor: 'Inception, Titanic',
-      rating: 9.2,
-      isFavorite: false
-    },
-    {
-      id: 2,
-      name: 'Scarlett Johansson',
-      image: 'https://image.tmdb.org/t/p/w500/6WQpSxH6Y4xepXrIKd78nARuYVx.jpg',
-      knownFor: 'Avengers, Lost in Translation',
-      rating: 8.8,
-      isFavorite: true
-    },
-    {
-      id: 3,
-      name: 'Tom Hanks',
-      image: 'https://image.tmdb.org/t/p/w500/xndWFsBlClOJFRdhSt4NBwiPq2o.jpg',
-      knownFor: 'Forrest Gump, Cast Away',
-      rating: 9.0,
-      isFavorite: false
-    },
-    {
-      id: 4,
-      name: 'Emma Stone',
-      image: 'https://image.tmdb.org/t/p/w500/2hwXbYKyqFqgCNd3QHxV3kqk3hm.jpg',
-      knownFor: 'La La Land, The Help',
-      rating: 8.5,
-      isFavorite: true
-    },
-    {
-      id: 5,
-      name: 'Ryan Gosling',
-      image: 'https://image.tmdb.org/t/p/w500/lyvszvJJqqI8aqBJ70XzdCNoK0y.jpg',
-      knownFor: 'La La Land, Drive',
-      rating: 8.7,
-      isFavorite: false
-    }
-  ];
+  /**
+   * Load top-rated movies from TMDB API
+   */
+  private loadTopRatedMovies() {
+    this.moviesService.getTopRatedMovies(1).subscribe({
+      next: (response) => {
+        console.log('Top-rated movies loaded:', response.results);
 
-  constructor(private router: Router) { }
+        // Map TMDB movies to local Movie interface
+        this.topMovies = response.results.slice(0, 10).map(movie => ({
+          id: movie.id,
+          title: movie.title,
+          poster: this.moviesService.getPosterUrl(movie.poster_path),
+          rating: parseFloat(movie.vote_average.toFixed(1)),
+          genre: this.getGenreFromIds(movie.genre_ids),
+          year: new Date(movie.release_date).getFullYear(),
+          isFavorite: false
+        }));
+      },
+      error: (error) => {
+        console.error('Error loading top-rated movies:', error);
+      }
+    });
+  }
+
+  /**
+   * Load trending movies from TMDB API
+   */
+  private loadTrendingMovies() {
+    this.moviesService.getTrendingMovies(1).subscribe({
+      next: (response) => {
+        console.log('Trending movies loaded:', response.results);
+
+        // Map TMDB movies to local Movie interface
+        this.trendingMovies = response.results.slice(0, 7).map(movie => ({
+          id: movie.id,
+          title: movie.title,
+          poster: this.moviesService.getPosterUrl(movie.poster_path),
+          rating: parseFloat(movie.vote_average.toFixed(1)),
+          genre: this.getGenreFromIds(movie.genre_ids),
+          year: new Date(movie.release_date).getFullYear(),
+          isFavorite: false
+        }));
+      },
+      error: (error) => {
+        console.error('Error loading trending movies:', error);
+      }
+    });
+  }
+
+  /**
+   * Load upcoming movies from TMDB API
+   */
+  private loadUpcomingMovies() {
+    this.moviesService.getUpcomingMovies(1).subscribe({
+      next: (response) => {
+        console.log('Upcoming movies loaded:', response.results);
+
+        // Map TMDB movies to local Movie interface
+        this.upcomingMovies = response.results.slice(0, 10).map(movie => ({
+          id: movie.id,
+          title: movie.title,
+          poster: this.moviesService.getPosterUrl(movie.poster_path),
+          rating: parseFloat(movie.vote_average.toFixed(1)),
+          genre: this.getGenreFromIds(movie.genre_ids),
+          year: new Date(movie.release_date).getFullYear(),
+          releaseDate: movie.release_date,
+          isFavorite: false
+        }));
+      },
+      error: (error) => {
+        console.error('Error loading upcoming movies:', error);
+      }
+    });
+  }
+
+  /**
+   * Get genre name from genre IDs (simplified version)
+   * In production, you would fetch genre list from API
+   */
+  private getGenreFromIds(genreIds: number[]): string {
+    const genreMap: { [key: number]: string } = {
+      28: 'Action',
+      12: 'Adventure',
+      16: 'Animation',
+      35: 'Comedy',
+      80: 'Crime',
+      99: 'Documentary',
+      18: 'Drama',
+      10751: 'Family',
+      14: 'Fantasy',
+      36: 'History',
+      27: 'Horror',
+      10402: 'Music',
+      9648: 'Mystery',
+      10749: 'Romance',
+      878: 'Sci-Fi',
+      10770: 'TV Movie',
+      53: 'Thriller',
+      10752: 'War',
+      37: 'Western'
+    };
+
+    return genreIds.length > 0 ? (genreMap[genreIds[0]] || 'Movie') : 'Movie';
+  }
 
   selectCategory(category: Category) {
     // Navigate to category page with category name parameter
@@ -214,11 +168,6 @@ export class HomePage {
   toggleFavorite(movie: Movie) {
     movie.isFavorite = !movie.isFavorite;
     // Add favorite management logic here
-  }
-
-  toggleActorFavorite(actor: Actor) {
-    actor.isFavorite = !actor.isFavorite;
-    // Add actor favorite management logic here
   }
 
   onSearch(event: any) {

@@ -12,13 +12,20 @@
 <ion-content [fullscreen]="true">
   <!-- Search and Filter Section -->
   <div class="search-section">
-    <ion-searchbar class="custom-searchbar" placeholder="Search movies..." animated="true" [(ngModel)]="searchQuery">
+    <ion-searchbar class="custom-searchbar" placeholder="Search movies..." animated="true" [(ngModel)]="searchQuery"
+      (ionInput)="onSearch($event)">
     </ion-searchbar>
   </div>
 
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading movies...</p>
+  </div>
+
   <!-- Movies List -->
-  <div class="movies-list">
-    <div *ngFor="let movie of moviesList" class="movie-item">
+  <div *ngIf="!loading" class="movies-list">
+    <div *ngFor="let movie of filteredMovies" class="movie-item">
       <div class="movie-poster">
         <img [src]="movie.poster" [alt]="movie.title" />
       </div>
@@ -30,7 +37,7 @@
             <ion-icon name="star"></ion-icon>
             <span>{{ movie.rating }}</span>
           </div>
-          <div class="duration">
+          <div class="duration" *ngIf="movie.duration !== 'N/A'">
             <ion-icon name="time-outline"></ion-icon>
             <span>{{ movie.duration }}</span>
           </div>
@@ -42,5 +49,12 @@
         </ion-icon>
       </ion-button>
     </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredMovies.length === 0" class="empty-state">
+    <ion-icon name="film-outline"></ion-icon>
+    <h3>No movies found</h3>
+    <p>Try searching with different keywords</p>
   </div>
 </ion-content>

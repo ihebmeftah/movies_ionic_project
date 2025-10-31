@@ -15,6 +15,42 @@
     </ion-searchbar>
   </div>
 
+  <!-- Upcoming Movies Carousel -->
+  <div class="carousel-container">
+    <div class="section-header">
+      <h2>Upcoming Movies</h2>
+    </div>
+
+    <div class="carousel-wrapper">
+      <div class="carousel-track">
+        <div *ngFor="let movie of upcomingMovies" class="carousel-item">
+          <div class="carousel-card">
+            <div class="carousel-poster">
+              <img [src]="movie.poster" [alt]="movie.title" />
+              <div class="rating-badge">
+                <ion-icon name="star"></ion-icon>
+                <span>{{ movie.rating }}</span>
+              </div>
+            </div>
+            <div class="carousel-info">
+              <h3>{{ movie.title }}</h3>
+              <p class="genre-text">{{ movie.genre }}</p>
+              <div class="release-date-badge">
+                <div class="date-icon">
+                  <ion-icon name="calendar"></ion-icon>
+                </div>
+                <div class="date-content">
+                  <span class="date-label">Coming Soon</span>
+                  <span class="date-value">{{ movie.releaseDate | date:'MMM dd, yyyy' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Categories Section -->
   <div class="section-container">
     <div class="section-header">
@@ -31,65 +67,10 @@
     </div>
   </div>
 
-  <!-- Users Section -->
+  <!-- Top Rated Movies Section -->
   <div class="section-container">
     <div class="section-header">
-      <h2>Active Users</h2>
-      <ion-text color="primary" class="see-all">See All</ion-text>
-    </div>
-
-    <div class="users-scroll">
-      <div *ngFor="let user of users" class="user-card">
-        <div class="user-avatar">
-          <img [src]="user.avatar" [alt]="user.name" />
-          <div class="online-indicator" [class.online]="user.isOnline"></div>
-        </div>
-        <div class="user-info">
-          <h4>{{ user.name }}</h4>
-          <p>{{ user.location }}</p>
-        </div>
-        <ion-button fill="clear" size="small" class="follow-btn">
-          <ion-icon name="person-add-outline"></ion-icon>
-        </ion-button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Actors Section -->
-  <div class="section-container">
-    <div class="section-header">
-      <h2>Popular Actors</h2>
-      <ion-text color="primary" class="see-all">See All</ion-text>
-    </div>
-
-    <div class="actors-scroll">
-      <div *ngFor="let actor of actors" class="actor-card">
-        <div class="actor-image">
-          <img [src]="actor.image" [alt]="actor.name" />
-          <div class="actor-overlay">
-            <ion-button fill="clear" class="favorite-btn" (click)="toggleActorFavorite(actor)">
-              <ion-icon [name]="actor.isFavorite ? 'heart' : 'heart-outline'"
-                [class.favorite-active]="actor.isFavorite">
-              </ion-icon>
-            </ion-button>
-          </div>
-        </div>
-        <div class="actor-info">
-          <h4>{{ actor.name }}</h4>
-          <p>{{ actor.knownFor }}</p>
-          <div class="actor-rating">
-            <ion-icon name="star"></ion-icon>
-            <span>{{ actor.rating }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Top Movies Section -->
-  <div class="section-container">
-    <div class="section-header">
-      <h2>Top Movies</h2>
+      <h2>Top Rated Movies</h2>
       <ion-text color="primary" class="see-all">See All</ion-text>
     </div>
 
