@@ -80,7 +80,7 @@ export class ProfilePage implements OnInit {
             try {
               await this.authService.logout();
               await loading.dismiss();
-              this.router.navigate(['/auth/login']);
+              this.router.navigate(['/auth']);
             } catch (error) {
               await loading.dismiss();
               console.error('Logout error:', error);

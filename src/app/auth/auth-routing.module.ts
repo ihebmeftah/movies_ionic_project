@@ -5,8 +5,9 @@ import { noAuthGuard } from '../guards/no-auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    loadComponent: () => import('./auth.page').then(m => m.AuthPage),
+    canActivate: [noAuthGuard] // Redirect to /tabs/home if already logged in
   },
   {
     path: 'login',
