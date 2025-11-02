@@ -11,26 +11,10 @@ import {
 } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 import { BehaviorSubject } from 'rxjs';
+import { FavoriteMovie, FavoriteMovieDisplay } from '../models';
 
-export interface FavoriteMovie {
-  userId: string;
-  userDisplayName?: string;
-  userEmail?: string;
-  movieId: number;
-  movieTitle: string;
-  movieGenre: string;
-  posterPath: string;
-  addedAt: Date;
-}
-
-// Simplified Movie interface for favorites display
-export interface FavoriteMovieDisplay {
-  id: number;
-  title: string;
-  genre: string;
-  posterPath: string;
-  addedAt: Date;
-}
+// Re-export models for backward compatibility
+export { FavoriteMovie, FavoriteMovieDisplay } from '../models';
 
 @Injectable({
   providedIn: 'root'

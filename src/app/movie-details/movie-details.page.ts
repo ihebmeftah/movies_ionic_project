@@ -5,13 +5,7 @@ import { MoviesService, MovieDetails, Credits, Cast, Crew } from '../services/mo
 import { FavoritesService } from '../services/favorites.service';
 import { FirestoreService } from '../services/firestore.service';
 import { AuthService } from '../services/auth.service';
-
-interface UserProfile {
-  id: string;
-  displayName?: string;
-  email?: string;
-  photoURL?: string;
-}
+import { UserProfile } from '../models';
 
 @Component({
   selector: 'app-movie-details',

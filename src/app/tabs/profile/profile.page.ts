@@ -14,6 +14,9 @@ interface UserProfile {
   };
 }
 
+// Note: This UserProfile is different from the models/user-profile.model.ts
+// as it includes additional stats property for the profile page display
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',

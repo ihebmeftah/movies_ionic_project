@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MoviesService, Movie as TMDBMovie } from '../../services/movies.service';
 import { FavoritesService } from '../../services/favorites.service';
+import { MovieDisplay } from '../../models';
 
 interface Category {
   name: string;
@@ -9,16 +10,8 @@ interface Category {
   active: boolean;
 }
 
-interface Movie {
-  id: number;
-  title: string;
-  poster: string;
-  rating: number;
-  genre: string;
-  year: number;
-  releaseDate?: string;
-  isFavorite: boolean;
-}
+// Use MovieDisplay from models
+type Movie = MovieDisplay;
 
 @Component({
   selector: 'app-home',

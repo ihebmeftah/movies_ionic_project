@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CategoriesService, Genre } from '../services/categories.service';
-
-interface Category {
-  id: number;
-  name: string;
-  icon: string;
-  description: string;
-  color: string;
-}
+import { Category } from '../models';
 
 @Component({
   selector: 'app-category',

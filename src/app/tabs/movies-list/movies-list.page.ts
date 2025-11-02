@@ -2,18 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MoviesService } from '../../services/movies.service';
 import { FavoritesService } from '../../services/favorites.service';
+import { MovieDisplay } from '../../models';
 
-interface Movie {
-  id: number;
-  title: string;
-  poster: string;
-  rating: number;
-  genre: string;
-  year: number;
-  duration: string;
-  description: string;
-  isFavorite: boolean;
-}
+// Use MovieDisplay from models
+type Movie = MovieDisplay;
 
 @Component({
   selector: 'app-movies-list',
@@ -127,7 +119,7 @@ export class MoviesListPage implements OnInit {
       this.filteredMovies = this.moviesList.filter(movie =>
         movie.title.toLowerCase().includes(query) ||
         movie.genre.toLowerCase().includes(query) ||
-        movie.description.toLowerCase().includes(query)
+        (movie.description?.toLowerCase().includes(query) ?? false)
       );
     }
   }
