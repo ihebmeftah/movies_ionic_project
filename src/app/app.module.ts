@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 // Firebase imports
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideFirestore, getFirestore, connectFirestoreEmulator } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -27,7 +27,14 @@ import { environment } from '../environments/environment';
     // Firebase providers
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      // Uncomment below if using emulator in development
+      // if (!environment.production) {
+      //   connectFirestoreEmulator(firestore, 'localhost', 8080);
+      // }
+      return firestore;
+    }),
   ],
   bootstrap: [AppComponent],
 })

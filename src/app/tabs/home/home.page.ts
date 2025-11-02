@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MoviesService, Movie as TMDBMovie } from '../../services/movies.service';
+import { FavoritesService } from '../../services/favorites.service';
 
 interface Category {
   name: string;
@@ -43,13 +44,34 @@ export class HomePage implements OnInit {
 
   constructor(
     private router: Router,
-    private moviesService: MoviesService
+    private moviesService: MoviesService,
+    private favoritesService: FavoritesService
   ) { }
 
   ngOnInit() {
     this.loadTopRatedMovies();
     this.loadTrendingMovies();
     this.loadUpcomingMovies();
+
+    // Subscribe to favorites changes to update UI
+    this.favoritesService.favorites$.subscribe(() => {
+      this.updateFavoriteStatus();
+    });
+  }
+
+  /**
+   * Update favorite status for all movies
+   */
+  private updateFavoriteStatus() {
+    this.topMovies.forEach(movie => {
+      movie.isFavorite = this.favoritesService.isFavorite(movie.id);
+    });
+    this.trendingMovies.forEach(movie => {
+      movie.isFavorite = this.favoritesService.isFavorite(movie.id);
+    });
+    this.upcomingMovies.forEach(movie => {
+      movie.isFavorite = this.favoritesService.isFavorite(movie.id);
+    });
   }
 
   /**
@@ -68,7 +90,7 @@ export class HomePage implements OnInit {
           rating: parseFloat(movie.vote_average.toFixed(1)),
           genre: this.getGenreFromIds(movie.genre_ids),
           year: new Date(movie.release_date).getFullYear(),
-          isFavorite: false
+          isFavorite: this.favoritesService.isFavorite(movie.id)
         }));
       },
       error: (error) => {
@@ -93,7 +115,7 @@ export class HomePage implements OnInit {
           rating: parseFloat(movie.vote_average.toFixed(1)),
           genre: this.getGenreFromIds(movie.genre_ids),
           year: new Date(movie.release_date).getFullYear(),
-          isFavorite: false
+          isFavorite: this.favoritesService.isFavorite(movie.id)
         }));
       },
       error: (error) => {
@@ -119,7 +141,7 @@ export class HomePage implements OnInit {
           genre: this.getGenreFromIds(movie.genre_ids),
           year: new Date(movie.release_date).getFullYear(),
           releaseDate: movie.release_date,
-          isFavorite: false
+          isFavorite: this.favoritesService.isFavorite(movie.id)
         }));
       },
       error: (error) => {
@@ -165,9 +187,18 @@ export class HomePage implements OnInit {
     });
   }
 
-  toggleFavorite(movie: Movie) {
-    movie.isFavorite = !movie.isFavorite;
-    // Add favorite management logic here
+  async toggleFavorite(movie: Movie) {
+    try {
+      await this.favoritesService.toggleFavorite(
+        movie.id,
+        movie.title,
+        movie.genre,
+        movie.poster
+      );
+      movie.isFavorite = this.favoritesService.isFavorite(movie.id);
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
   }
 
   onSearch(event: any) {

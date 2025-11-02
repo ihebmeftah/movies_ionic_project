@@ -17,6 +17,28 @@ ion-content {
   }
 }
 
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  padding: 40px;
+  text-align: center;
+
+  ion-spinner {
+    --color: var(--ion-color-primary);
+    transform: scale(1.5);
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    margin-top: 20px;
+  }
+}
+
 .empty-state {
   display: flex;
   flex-direction: column;

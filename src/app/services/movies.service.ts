@@ -84,4 +84,14 @@ export class MoviesService {
   getBackdropUrl(backdropPath: string): string {
     return backdropPath ? `${this.imageBaseUrl}${backdropPath}` : '';
   }
+
+  /**
+   * Fetch a single movie by ID from TMDB API
+   * @param movieId The TMDB movie ID
+   * @returns Observable of Movie details
+   */
+  getMovieById(movieId: number): Observable<Movie> {
+    const url = `${this.baseUrl}/movie/${movieId}?api_key=${this.apiKey}`;
+    return this.http.get<Movie>(url);
+  }
 }

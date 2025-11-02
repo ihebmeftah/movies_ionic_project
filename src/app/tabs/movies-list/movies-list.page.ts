@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MoviesService } from '../../services/movies.service';
+import { FavoritesService } from '../../services/favorites.service';
 
 interface Movie {
   id: number;
@@ -25,10 +26,30 @@ export class MoviesListPage implements OnInit {
   filteredMovies: Movie[] = [];
   loading: boolean = true;
 
-  constructor(private moviesService: MoviesService) { }
+  constructor(
+    private moviesService: MoviesService,
+    private favoritesService: FavoritesService
+  ) { }
 
   ngOnInit() {
     this.loadMovies();
+
+    // Subscribe to favorites changes to update UI
+    this.favoritesService.favorites$.subscribe(() => {
+      this.updateFavoriteStatus();
+    });
+  }
+
+  /**
+   * Update favorite status for all movies
+   */
+  private updateFavoriteStatus() {
+    this.moviesList.forEach(movie => {
+      movie.isFavorite = this.favoritesService.isFavorite(movie.id);
+    });
+    this.filteredMovies.forEach(movie => {
+      movie.isFavorite = this.favoritesService.isFavorite(movie.id);
+    });
   }
 
   /**
@@ -50,7 +71,7 @@ export class MoviesListPage implements OnInit {
           year: new Date(movie.release_date).getFullYear(),
           duration: 'N/A', // Runtime not available in list endpoint
           description: movie.overview,
-          isFavorite: false
+          isFavorite: this.favoritesService.isFavorite(movie.id)
         }));
 
         this.filteredMovies = [...this.moviesList];
@@ -109,9 +130,18 @@ export class MoviesListPage implements OnInit {
     }
   }
 
-  toggleFavorite(movie: Movie) {
-    movie.isFavorite = !movie.isFavorite;
-    // Add favorite management logic here
+  async toggleFavorite(movie: Movie) {
+    try {
+      await this.favoritesService.toggleFavorite(
+        movie.id,
+        movie.title,
+        movie.genre,
+        movie.poster
+      );
+      movie.isFavorite = this.favoritesService.isFavorite(movie.id);
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
   }
 }
 
