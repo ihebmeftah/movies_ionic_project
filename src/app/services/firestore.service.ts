@@ -10,10 +10,7 @@ import {
   deleteDoc,
   query,
   where,
-  CollectionReference,
-  DocumentData
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

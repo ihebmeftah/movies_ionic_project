@@ -7,8 +7,6 @@ import {
   MoviesResponse,
   MovieDetails,
   Credits,
-  Cast,
-  Crew
 } from '../models';
 
 // Re-export models for backward compatibility
