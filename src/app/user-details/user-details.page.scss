@@ -200,3 +200,185 @@ ion-content {
     }
   }
 }
+
+// Matching Card
+.matching-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 0 0 20px 0;
+
+  ion-card-header {
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+
+    ion-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ion-color-dark);
+
+      ion-icon {
+        font-size: 24px;
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+
+  ion-card-content {
+    padding: 20px;
+  }
+
+  // Match Percentage Circle
+  .match-percentage {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+
+    .percentage-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+      &.match-success {
+        background: linear-gradient(135deg, #2dd36f 0%, #10dc60 100%);
+      }
+
+      &.match-warning {
+        background: linear-gradient(135deg, #ffc409 0%, #ffca22 100%);
+      }
+
+      &.match-danger {
+        background: linear-gradient(135deg, #eb445a 0%, #f04141 100%);
+      }
+
+      .percentage-number {
+        font-size: 40px;
+        font-weight: 700;
+        color: white;
+        line-height: 1;
+      }
+
+      .percentage-label {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 4px;
+      }
+    }
+  }
+
+  // Match Details
+  .match-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .match-detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 12px;
+
+      > ion-icon {
+        font-size: 24px;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+
+      .detail-text {
+        flex: 1;
+
+        .detail-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: var(--ion-color-medium);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin: 0 0 4px 0;
+        }
+
+        .detail-value {
+          font-size: 15px;
+          color: var(--ion-color-dark);
+          margin: 0;
+          word-break: break-word;
+        }
+      }
+    }
+  }
+
+  // Common Movies Section
+  .common-movies-section {
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ion-color-dark);
+      margin: 0 0 16px 0;
+    }
+
+    .common-movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+
+      .movie-item {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        aspect-ratio: 2/3;
+
+        &:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .movie-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.9) 0%,
+            transparent 100%
+          );
+          padding: 8px;
+
+          .movie-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+            line-height: 1.2;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+  }
+}

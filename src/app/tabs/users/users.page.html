@@ -9,6 +9,21 @@
       animated="true">
     </ion-searchbar>
   </ion-toolbar>
+
+  <!-- Matching Filter Toggle -->
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="showMatchingOnly" (ionChange)="toggleMatchingFilter()">
+      <ion-segment-button [value]="false">
+        <ion-label>All Users</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="true">
+        <ion-label>
+          <ion-icon name="heart-outline"></ion-icon>
+          Best Matches (75%+)
+        </ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -20,30 +35,38 @@
   </ion-refresher>
 
   <!-- Loading State -->
-  <div class="loading-container" *ngIf="isLoading">
+  <div class="loading-container" *ngIf="isLoading || isLoadingMatching">
     <ion-spinner name="crescent"></ion-spinner>
-    <p>Loading users...</p>
+    <p>{{ isLoadingMatching ? 'Calculating matches...' : 'Loading users...' }}</p>
+  </div>
+
+  <!-- Empty State - No Matches -->
+  <div class="empty-state" *ngIf="!isLoading && !isLoadingMatching && filteredUsers.length === 0 && showMatchingOnly">
+    <ion-icon name="heart-dislike-outline" class="empty-icon"></ion-icon>
+    <h2>No Matches Found</h2>
+    <p>No users with 75%+ compatibility found{{ searchTerm ? ' for "' + searchTerm + '"' : '' }}</p>
   </div>
 
   <!-- Empty State - No Results -->
-  <div class="empty-state" *ngIf="!isLoading && filteredUsers.length === 0 && searchTerm.length > 0">
+  <div class="empty-state"
+    *ngIf="!isLoading && !isLoadingMatching && filteredUsers.length === 0 && searchTerm.length > 0 && !showMatchingOnly">
     <ion-icon name="search-outline" class="empty-icon"></ion-icon>
     <h2>No Users Found</h2>
     <p>No users match "{{ searchTerm }}"</p>
   </div>
 
   <!-- Empty State - No Users -->
-  <div class="empty-state" *ngIf="!isLoading && allUsers.length === 0 && searchTerm.length === 0">
+  <div class="empty-state" *ngIf="!isLoading && !isLoadingMatching && allUsers.length === 0 && searchTerm.length === 0">
     <ion-icon name="people-outline" class="empty-icon"></ion-icon>
     <h2>No Users Found</h2>
     <p>No other users are registered yet</p>
   </div>
 
   <!-- Users List -->
-  <div class="users-container" *ngIf="!isLoading && filteredUsers.length > 0">
+  <div class="users-container" *ngIf="!isLoading && !isLoadingMatching && filteredUsers.length > 0">
     <div class="users-header">
-      <h3>{{ filteredUsers.length }} {{ filteredUsers.length === 1 ? 'user' : 'users' }}{{ searchTerm ? ' found' : '
-        registered' }}</h3>
+      <h3>{{ filteredUsers.length }} {{ filteredUsers.length === 1 ? 'user' : 'users' }}{{ searchTerm ? ' found' :
+        (showMatchingOnly ? ' with high compatibility' : ' registered') }}</h3>
     </div>
 
     <ion-list lines="none">
@@ -54,7 +77,14 @@
         </ion-avatar>
 
         <ion-label>
-          <h2>{{ user.displayName }}</h2>
+          <h2>
+            {{ user.displayName }}
+            <ion-chip *ngIf="showMatchingOnly && getMatchPercentage(user.id) >= 75"
+              [color]="getMatchColor(getMatchPercentage(user.id))" class="match-badge">
+              <ion-icon name="heart"></ion-icon>
+              <ion-label>{{ getMatchPercentage(user.id) }}%</ion-label>
+            </ion-chip>
+          </h2>
           <p>{{ user.email }}</p>
         </ion-label>
 

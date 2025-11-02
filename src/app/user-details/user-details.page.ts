@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, LoadingController, ToastController, ModalController } from '@ionic/angular';
 import { UserService, User } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
+import { MatchingService, MatchingResult, MovieMatch } from '../services/matching.service';
 import { FollowersModalComponent } from '../components/followers-modal/followers-modal.component';
 
 @Component({
@@ -21,11 +22,18 @@ export class UserDetailsPage implements OnInit {
   followersCount: number = 0;
   followingCount: number = 0;
 
+  // Matching data
+  matchingResult: MatchingResult | null = null;
+  commonMovies: MovieMatch[] = [];
+  showMatching: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private navCtrl: NavController,
     private userService: UserService,
     private authService: AuthService,
+    private matchingService: MatchingService,
     private loadingController: LoadingController,
     private toastController: ToastController,
     private modalController: ModalController
@@ -62,6 +70,13 @@ export class UserDetailsPage implements OnInit {
       const counts = await this.userService.getFollowCounts(this.userId);
       this.followersCount = counts.followers;
       this.followingCount = counts.following;
+
+      // Calculate matching if viewing other user's profile
+      if (!this.isCurrentUser) {
+        this.matchingResult = await this.matchingService.calculateMatching(this.userId);
+        this.commonMovies = await this.matchingService.getCommonMovies(this.userId);
+        this.showMatching = true;
+      }
 
     } catch (error) {
       console.error('Error loading user details:', error);
@@ -139,6 +154,16 @@ export class UserDetailsPage implements OnInit {
 
   goBack() {
     this.navCtrl.back();
+  }
+
+  getMatchColor(percentage: number): string {
+    if (percentage >= 75) return 'success';
+    if (percentage >= 50) return 'warning';
+    return 'danger';
+  }
+
+  navigateToMovie(movieId: number) {
+    this.router.navigate(['/tabs/detail', movieId]);
   }
 
   private async showToast(message: string, color: string = 'primary') {

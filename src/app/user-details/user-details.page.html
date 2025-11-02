@@ -55,6 +55,58 @@
       </div>
     </div>
 
+    <!-- Matching Section (only for other users) -->
+    <ion-card class="matching-card" *ngIf="!isCurrentUser && matchingResult">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="heart-circle-outline"></ion-icon>
+          Movie Compatibility
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- Match Percentage -->
+        <div class="match-percentage">
+          <div class="percentage-circle" [class]="'match-' + getMatchColor(matchingResult.matchPercentage)">
+            <span class="percentage-number">{{ matchingResult.matchPercentage }}%</span>
+            <span class="percentage-label">Match</span>
+          </div>
+        </div>
+
+        <!-- Match Details -->
+        <div class="match-details">
+          <div class="match-detail-item">
+            <ion-icon name="film-outline" color="primary"></ion-icon>
+            <div class="detail-text">
+              <p class="detail-label">Common Movies</p>
+              <p class="detail-value">{{ matchingResult.commonMovies }}</p>
+            </div>
+          </div>
+
+          <div class="match-detail-item">
+            <ion-icon name="grid-outline" color="secondary"></ion-icon>
+            <div class="detail-text">
+              <p class="detail-label">Common Genres</p>
+              <p class="detail-value">{{ matchingResult.commonGenres.join(', ') || 'None' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Common Movies Grid -->
+        <div class="common-movies-section" *ngIf="commonMovies && commonMovies.length > 0">
+          <h3>Movies You Both Love</h3>
+          <div class="common-movies-grid">
+            <div class="movie-item" *ngFor="let movie of commonMovies" (click)="navigateToMovie(movie.movieId)">
+              <img [src]="'https://image.tmdb.org/t/p/w185' + movie.posterPath" [alt]="movie.movieTitle"
+                onerror="this.src='assets/placeholder.jpg'" />
+              <div class="movie-overlay">
+                <p class="movie-title">{{ movie.movieTitle }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
     <!-- Additional Info Card -->
     <ion-card class="info-card">
       <ion-card-header>

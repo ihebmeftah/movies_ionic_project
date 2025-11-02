@@ -104,6 +104,23 @@ ion-content {
       font-weight: 600;
       color: var(--ion-color-dark);
       margin: 0 0 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .match-badge {
+        height: 24px;
+        font-size: 12px;
+        font-weight: 700;
+
+        ion-icon {
+          font-size: 14px;
+        }
+
+        ion-label {
+          margin: 0;
+        }
+      }
     }
 
     p {
@@ -133,6 +150,28 @@ ion-searchbar {
   --border-radius: 12px;
   --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   padding: 8px 16px;
+}
+
+// Segment Filter
+ion-segment {
+  padding: 8px 16px;
+
+  ion-segment-button {
+    --indicator-color: var(--ion-color-primary);
+    text-transform: none;
+    font-size: 14px;
+    font-weight: 600;
+
+    ion-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+  }
 }
 
 // Refresher styling
