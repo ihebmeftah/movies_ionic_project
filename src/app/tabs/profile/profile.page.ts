@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { FavoritesService } from '../../services/favorites.service';
 import { LoadingController, AlertController } from '@ionic/angular';
 
 interface UserProfile {
@@ -8,10 +9,16 @@ interface UserProfile {
   email: string;
   avatar: string;
   stats: {
-    movies: number;
+    followers: number;
+    following: number;
     favorites: number;
-    watchlist: number;
+    moviesWatched: number;
   };
+}
+
+interface GenreStats {
+  name: string;
+  count: number;
 }
 
 // Note: This UserProfile is different from the models/user-profile.model.ts
@@ -29,21 +36,33 @@ export class ProfilePage implements OnInit {
     email: 'john.doe@example.com',
     avatar: 'https://i.pravatar.cc/300',
     stats: {
-      movies: 145,
-      favorites: 23,
-      watchlist: 12
+      followers: 0,
+      following: 0,
+      favorites: 0,
+      moviesWatched: 0
     }
   };
+
+  favoriteGenre: string = '';
+  genreStats: GenreStats[] = [];
+  totalMoviesWatched: number = 0;
 
   constructor(
     private router: Router,
     private authService: AuthService,
+    private favoritesService: FavoritesService,
     private loadingController: LoadingController,
     private alertController: AlertController
   ) { }
 
   ngOnInit() {
     this.loadUserProfile();
+    this.loadUserStats();
+  }
+
+  ionViewWillEnter() {
+    // Refresh stats when entering the page
+    this.loadUserStats();
   }
 
   // Load user profile from Firebase Auth
@@ -52,8 +71,54 @@ export class ProfilePage implements OnInit {
     if (user) {
       this.userProfile.email = user.email || 'user@example.com';
       this.userProfile.name = user.displayName || 'User';
-      // You can load more data from Firestore here
+
+      // Set avatar from Firebase Auth or use default
+      if (user.photoURL) {
+        this.userProfile.avatar = user.photoURL;
+      }
     }
+  }
+
+  // Load user statistics
+  async loadUserStats() {
+    const user = this.authService.getCurrentUser();
+    if (!user) return;
+
+    // Get favorites count and genre statistics
+    const favoriteMovies = this.favoritesService.getFavoriteMovies();
+    this.userProfile.stats.favorites = favoriteMovies.length;
+
+    // Calculate genre statistics
+    const genreMap = new Map<string, number>();
+
+    favoriteMovies.forEach(movie => {
+      if (movie.genre) {
+        const genres = movie.genre.split(',').map(g => g.trim());
+        genres.forEach(genre => {
+          genreMap.set(genre, (genreMap.get(genre) || 0) + 1);
+        });
+      }
+    });
+
+    // Convert to array and sort by count
+    this.genreStats = Array.from(genreMap.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+
+    // Set favorite genre (most common)
+    if (this.genreStats.length > 0) {
+      this.favoriteGenre = this.genreStats[0].name;
+    } else {
+      this.favoriteGenre = 'Not yet available';
+    }
+
+    // For now, use favorites count as movies watched (you can adjust this logic)
+    this.totalMoviesWatched = favoriteMovies.length;
+    this.userProfile.stats.moviesWatched = this.totalMoviesWatched;
+
+    // Mock followers/following data (you can implement this feature later with Firestore)
+    this.userProfile.stats.followers = Math.floor(Math.random() * 500) + 50;
+    this.userProfile.stats.following = Math.floor(Math.random() * 200) + 20;
   }
 
   navigateTo(page: string) {

@@ -17,86 +17,74 @@
         <img [src]="userProfile.avatar" alt="Profile" />
       </ion-avatar>
       <h2>{{ userProfile.name }}</h2>
-      <p>{{ userProfile.email }}</p>
+      <p class="user-email">{{ userProfile.email }}</p>
     </div>
 
-    <!-- Stats Section -->
-    <div class="stats-section">
-      <div class="stat-item">
-        <h3>{{ userProfile.stats.movies }}</h3>
-        <p>Movies</p>
+    <!-- Follow Stats Section -->
+    <div class="follow-stats-section">
+      <div class="follow-stat-item">
+        <h3>{{ userProfile.stats.followers }}</h3>
+        <p>Followers</p>
       </div>
-      <div class="stat-item">
+      <div class="follow-stat-item">
+        <h3>{{ userProfile.stats.following }}</h3>
+        <p>Following</p>
+      </div>
+      <div class="follow-stat-item">
         <h3>{{ userProfile.stats.favorites }}</h3>
         <p>Favorites</p>
-      </div>
-      <div class="stat-item">
-        <h3>{{ userProfile.stats.watchlist }}</h3>
-        <p>Watchlist</p>
       </div>
     </div>
   </div>
 
-  <!-- Menu Options -->
+  <!-- User Statistics Cards -->
+  <div class="stats-cards-section">
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-card-header">
+          <ion-icon name="film-outline" class="stat-icon"></ion-icon>
+          <div class="stat-info">
+            <h3>{{ totalMoviesWatched }}</h3>
+            <p>Movies Watched</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="stat-card">
+      <ion-card-content>
+        <div class="stat-card-header">
+          <ion-icon name="heart-outline" class="stat-icon favorite-icon"></ion-icon>
+          <div class="stat-info">
+            <h3>{{ favoriteGenre }}</h3>
+            <p>Favorite Genre</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Genre Distribution -->
+  <div class="genre-section" *ngIf="genreStats.length > 0">
+    <h3 class="section-title">Genre Preferences</h3>
+    <ion-card class="genre-card">
+      <ion-card-content>
+        <div class="genre-item" *ngFor="let genre of genreStats.slice(0, 5)">
+          <div class="genre-info">
+            <span class="genre-name">{{ genre.name }}</span>
+            <span class="genre-count">{{ genre.count }} movies</span>
+          </div>
+          <div class="genre-bar-container">
+            <div class="genre-bar" [style.width.%]="(genre.count / genreStats[0].count) * 100">
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Logout Section -->
   <div class="menu-section">
-    <ion-list class="menu-list">
-      <ion-item button detail="true" class="menu-item" (click)="navigateTo('edit-profile')">
-        <ion-icon name="person-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h3>Edit Profile</h3>
-          <p>Update your personal information</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item button detail="true" class="menu-item" (click)="navigateTo('watchlist')">
-        <ion-icon name="bookmark-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h3>My Watchlist</h3>
-          <p>Movies you want to watch</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item button detail="true" class="menu-item" (click)="navigateTo('downloads')">
-        <ion-icon name="download-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h3>Downloads</h3>
-          <p>Your downloaded content</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item button detail="true" class="menu-item" (click)="navigateTo('notifications')">
-        <ion-icon name="notifications-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h3>Notifications</h3>
-          <p>Manage your notifications</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item button detail="true" class="menu-item" (click)="navigateTo('language')">
-        <ion-icon name="language-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h3>Language</h3>
-          <p>English</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item button detail="true" class="menu-item" (click)="navigateTo('help')">
-        <ion-icon name="help-circle-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h3>Help & Support</h3>
-          <p>Get help with the app</p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item button detail="true" class="menu-item" (click)="navigateTo('about')">
-        <ion-icon name="information-circle-outline" slot="start"></ion-icon>
-        <ion-label>
-          <h3>About</h3>
-          <p>App version 1.0.0</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-
     <!-- Logout Button -->
     <ion-button expand="block" shape="round" class="logout-button" (click)="logout()">
       <ion-icon name="log-out-outline" slot="start"></ion-icon>
