@@ -1,0 +1,155 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Movie Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleFavorite()">
+        <ion-icon slot="icon-only" [name]="isFavorite ? 'heart' : 'heart-outline'"
+          [color]="isFavorite ? 'danger' : ''"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading movie details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <ion-icon name="alert-circle-outline" color="danger"></ion-icon>
+    <p>{{ error }}</p>
+    <ion-button (click)="loadMovieDetails()">Retry</ion-button>
+  </div>
+
+  <!-- Movie Details -->
+  <div *ngIf="movie && !loading" class="movie-details">
+    <!-- Backdrop Image -->
+    <div class="backdrop-container">
+      <img [src]="getBackdropUrl(movie.backdrop_path)" [alt]="movie.title" *ngIf="movie.backdrop_path" />
+      <div class="backdrop-overlay"></div>
+    </div>
+
+    <!-- Movie Info -->
+    <div class="movie-info">
+      <div class="poster-section">
+        <img [src]="getPosterUrl(movie.poster_path)" [alt]="movie.title" class="poster" *ngIf="movie.poster_path" />
+      </div>
+
+      <div class="details-section">
+        <h1 class="movie-title">{{ movie.title }}</h1>
+        <p class="tagline" *ngIf="movie.tagline">{{ movie.tagline }}</p>
+
+        <div class="meta-info">
+          <div class="meta-item">
+            <ion-icon name="star" color="warning"></ion-icon>
+            <span>{{ movie.vote_average.toFixed(1) }}/10</span>
+          </div>
+          <div class="meta-item">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ getRuntimeFormatted() }}</span>
+          </div>
+          <div class="meta-item">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span>{{ movie.release_date | date:'yyyy' }}</span>
+          </div>
+        </div>
+
+        <div class="genres">
+          <ion-chip *ngFor="let genre of movie.genres" color="primary">
+            <ion-label>{{ genre.name }}</ion-label>
+          </ion-chip>
+        </div>
+
+        <div class="overview-section">
+          <h2>Overview</h2>
+          <p class="overview">{{ movie.overview }}</p>
+        </div>
+
+        <!-- Director Info -->
+        <div class="director-section" *ngIf="director">
+          <h3>Director</h3>
+          <div class="director-info">
+            <div class="director-avatar">
+              <img [src]="getProfileUrl(director.profile_path)" *ngIf="director.profile_path" [alt]="director.name" />
+              <ion-icon name="person-circle-outline" *ngIf="!director.profile_path"></ion-icon>
+            </div>
+            <span>{{ director.name }}</span>
+          </div>
+        </div>
+
+        <!-- Cast Section -->
+        <div class="cast-section" *ngIf="cast.length > 0">
+          <h2>Top Cast</h2>
+          <div class="cast-list">
+            <div class="cast-item" *ngFor="let member of cast">
+              <div class="cast-avatar">
+                <img [src]="getProfileUrl(member.profile_path)" *ngIf="member.profile_path" [alt]="member.name" />
+                <ion-icon name="person-circle-outline" *ngIf="!member.profile_path"></ion-icon>
+              </div>
+              <div class="cast-info">
+                <p class="cast-name">{{ member.name }}</p>
+                <p class="cast-character">{{ member.character }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Users Who Favorited Section -->
+        <div class="favorites-section">
+          <h2>
+            <ion-icon name="heart" color="danger"></ion-icon>
+            Favorited by {{ favoritesCount }} {{ favoritesCount === 1 ? 'user' : 'users' }}
+          </h2>
+
+          <div *ngIf="usersWhoFavorited.length > 0" class="users-list">
+            <div class="user-item" *ngFor="let user of usersWhoFavorited">
+              <div class="user-avatar">
+                <img [src]="user.photoURL" *ngIf="user.photoURL" [alt]="user.displayName" />
+                <ion-icon name="person-circle" *ngIf="!user.photoURL" color="primary"></ion-icon>
+              </div>
+              <div class="user-info">
+                <p class="user-name">{{ user.displayName }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="usersWhoFavorited.length === 0" class="no-favorites">
+            <ion-icon name="heart-outline" color="medium"></ion-icon>
+            <p>No one has favorited this movie yet. Be the first!</p>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="additional-info">
+          <h2>Additional Information</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Status:</span>
+              <span class="info-value">{{ movie.status }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Original Language:</span>
+              <span class="info-value">{{ movie.original_language.toUpperCase() }}</span>
+            </div>
+            <div class="info-item" *ngIf="movie.budget > 0">
+              <span class="info-label">Budget:</span>
+              <span class="info-value">${{ movie.budget.toLocaleString() }}</span>
+            </div>
+            <div class="info-item" *ngIf="movie.revenue > 0">
+              <span class="info-label">Revenue:</span>
+              <span class="info-value">${{ movie.revenue.toLocaleString() }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -14,6 +14,8 @@ import { BehaviorSubject } from 'rxjs';
 
 export interface FavoriteMovie {
   userId: string;
+  userDisplayName?: string;
+  userEmail?: string;
   movieId: number;
   movieTitle: string;
   movieGenre: string;
@@ -79,6 +81,8 @@ export class FavoritesService {
       const favoriteRef = doc(this.firestore, 'favorites', `${user.uid}_${movieId}`);
       const favoriteData: FavoriteMovie = {
         userId: user.uid,
+        userDisplayName: user.displayName || user.email || 'User',
+        userEmail: user.email || undefined,
         movieId: movieId,
         movieTitle: movieTitle,
         movieGenre: movieGenre,
@@ -233,5 +237,61 @@ export class FavoritesService {
    */
   getFavoritesCount(): number {
     return this.favoritesSubject.value.length;
+  }
+
+  /**
+   * Get all users who favorited a specific movie
+   * @param movieId The TMDB movie ID
+   * @returns Promise with array of user IDs who favorited this movie
+   */
+  async getUsersWhoFavoritedMovie(movieId: number): Promise<string[]> {
+    try {
+      const favoritesCollection = collection(this.firestore, 'favorites');
+      const q = query(favoritesCollection, where('movieId', '==', movieId));
+      const querySnapshot = await getDocs(q);
+
+      const userIds: string[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as FavoriteMovie;
+        if (!userIds.includes(data.userId)) {
+          userIds.push(data.userId);
+        }
+      });
+
+      return userIds;
+    } catch (error) {
+      console.error('Error getting users who favorited movie:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get all favorite records for a specific movie (includes user info)
+   * @param movieId The TMDB movie ID
+   * @returns Promise with array of FavoriteMovie objects
+   */
+  async getFavoritesForMovie(movieId: number): Promise<FavoriteMovie[]> {
+    try {
+      const favoritesCollection = collection(this.firestore, 'favorites');
+      const q = query(favoritesCollection, where('movieId', '==', movieId));
+      const querySnapshot = await getDocs(q);
+
+      const favorites: FavoriteMovie[] = [];
+      const uniqueUserIds = new Set<string>();
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as FavoriteMovie;
+        // Only add if we haven't seen this user yet (in case of duplicates)
+        if (!uniqueUserIds.has(data.userId)) {
+          uniqueUserIds.add(data.userId);
+          favorites.push(data);
+        }
+      });
+
+      return favorites;
+    } catch (error) {
+      console.error('Error getting favorites for movie:', error);
+      return [];
+    }
   }
 }

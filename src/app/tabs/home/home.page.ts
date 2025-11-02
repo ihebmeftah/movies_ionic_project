@@ -210,5 +210,12 @@ export class HomePage implements OnInit {
   goToCategories() {
     this.router.navigate(['/category']);
   }
-}
 
+  /**
+   * Navigate to movie details page
+   * @param movieId The TMDB movie ID
+   */
+  goToMovieDetails(movieId: number) {
+    this.router.navigate(['/movie-details', movieId]);
+  }
+}

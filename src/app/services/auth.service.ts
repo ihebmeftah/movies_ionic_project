@@ -8,6 +8,7 @@ import {
   onAuthStateChanged,
   updateProfile
 } from '@angular/fire/auth';
+import { Firestore, doc, setDoc, getDoc } from '@angular/fire/firestore';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -17,7 +18,10 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private auth: Auth) {
+  constructor(
+    private auth: Auth,
+    private firestore: Firestore
+  ) {
     // Initialize auth state listener
     this.initAuthListener();
   }
@@ -44,9 +48,29 @@ export class AuthService {
         await updateProfile(credential.user, { displayName });
       }
 
+      // Save user profile to Firestore
+      if (credential.user) {
+        await this.saveUserProfile(credential.user.uid, {
+          email: credential.user.email || '',
+          displayName: displayName || credential.user.email || 'User',
+          createdAt: new Date().toISOString(),
+          photoURL: credential.user.photoURL || null
+        });
+      }
+
       return credential;
     } catch (error) {
       throw error;
+    }
+  }
+
+  // Save user profile to Firestore
+  private async saveUserProfile(userId: string, profileData: any) {
+    try {
+      const userRef = doc(this.firestore, 'users', userId);
+      await setDoc(userRef, profileData);
+    } catch (error) {
+      console.error('Error saving user profile:', error);
     }
   }
 
@@ -54,6 +78,23 @@ export class AuthService {
   async login(email: string, password: string) {
     try {
       const credential = await signInWithEmailAndPassword(this.auth, email, password);
+
+      // Check if user profile exists in Firestore, if not create it
+      if (credential.user) {
+        const userRef = doc(this.firestore, 'users', credential.user.uid);
+        const docSnap = await getDoc(userRef);
+
+        if (!docSnap.exists()) {
+          // Create profile for existing user who doesn't have one
+          await this.saveUserProfile(credential.user.uid, {
+            email: credential.user.email || '',
+            displayName: credential.user.displayName || credential.user.email || 'User',
+            createdAt: new Date().toISOString(),
+            photoURL: credential.user.photoURL || null
+          });
+        }
+      }
+
       return credential;
     } catch (error) {
       throw error;

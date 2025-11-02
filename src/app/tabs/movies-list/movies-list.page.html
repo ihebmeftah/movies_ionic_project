@@ -25,7 +25,7 @@
 
   <!-- Movies List -->
   <div *ngIf="!loading" class="movies-list">
-    <div *ngFor="let movie of filteredMovies" class="movie-item">
+    <div *ngFor="let movie of filteredMovies" class="movie-item" (click)="goToMovieDetails(movie.id)">
       <div class="movie-poster">
         <img [src]="movie.poster" [alt]="movie.title" />
       </div>
@@ -44,7 +44,7 @@
         </div>
         <p class="description">{{ movie.description }}</p>
       </div>
-      <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie)">
+      <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie); $event.stopPropagation()">
         <ion-icon [name]="movie.isFavorite ? 'heart' : 'heart-outline'" [class.favorite-active]="movie.isFavorite">
         </ion-icon>
       </ion-button>

@@ -23,7 +23,7 @@
 
     <div class="carousel-wrapper">
       <div class="carousel-track">
-        <div *ngFor="let movie of upcomingMovies" class="carousel-item">
+        <div *ngFor="let movie of upcomingMovies" class="carousel-item" (click)="goToMovieDetails(movie.id)">
           <div class="carousel-card">
             <div class="carousel-poster">
               <img [src]="movie.poster" [alt]="movie.title" />
@@ -75,11 +75,11 @@
     </div>
 
     <div class="movies-grid">
-      <div *ngFor="let movie of topMovies" class="movie-card">
+      <div *ngFor="let movie of topMovies" class="movie-card" (click)="goToMovieDetails(movie.id)">
         <div class="movie-poster">
           <img [src]="movie.poster" [alt]="movie.title" />
           <div class="movie-overlay">
-            <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie)">
+            <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie); $event.stopPropagation()">
               <ion-icon [name]="movie.isFavorite ? 'heart' : 'heart-outline'"
                 [class.favorite-active]="movie.isFavorite">
               </ion-icon>
@@ -106,10 +106,10 @@
     </div>
 
     <div class="trending-scroll">
-      <div *ngFor="let movie of trendingMovies" class="trending-card">
+      <div *ngFor="let movie of trendingMovies" class="trending-card" (click)="goToMovieDetails(movie.id)">
         <img [src]="movie.poster" [alt]="movie.title" />
         <div class="trending-overlay">
-          <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie)">
+          <ion-button fill="clear" class="favorite-btn" (click)="toggleFavorite(movie); $event.stopPropagation()">
             <ion-icon [name]="movie.isFavorite ? 'heart' : 'heart-outline'" [class.favorite-active]="movie.isFavorite">
             </ion-icon>
           </ion-button>

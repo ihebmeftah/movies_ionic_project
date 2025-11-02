@@ -24,6 +24,10 @@ const routes: Routes = [
     loadChildren: () => import('./category/category.module').then(m => m.CategoryPageModule),
     canActivate: [authGuard] // Protected - requires authentication
   },
+  {
+    path: 'movie-details',
+    loadChildren: () => import('./movie-details/movie-details.module').then( m => m.MovieDetailsPageModule)
+  },
 ];
 
 @NgModule({

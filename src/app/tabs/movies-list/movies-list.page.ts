@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MoviesService } from '../../services/movies.service';
 import { FavoritesService } from '../../services/favorites.service';
 
@@ -27,6 +28,7 @@ export class MoviesListPage implements OnInit {
   loading: boolean = true;
 
   constructor(
+    private router: Router,
     private moviesService: MoviesService,
     private favoritesService: FavoritesService
   ) { }
@@ -143,5 +145,12 @@ export class MoviesListPage implements OnInit {
       console.error('Error toggling favorite:', error);
     }
   }
-}
 
+  /**
+   * Navigate to movie details page
+   * @param movieId The TMDB movie ID
+   */
+  goToMovieDetails(movieId: number) {
+    this.router.navigate(['/movie-details', movieId]);
+  }
+}

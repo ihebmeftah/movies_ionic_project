@@ -27,6 +27,78 @@ export interface MoviesResponse {
   total_results: number;
 }
 
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface ProductionCompany {
+  id: number;
+  logo_path: string | null;
+  name: string;
+  origin_country: string;
+}
+
+export interface MovieDetails {
+  adult: boolean;
+  backdrop_path: string;
+  budget: number;
+  genres: Genre[];
+  homepage: string;
+  id: number;
+  imdb_id: string;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  production_companies: ProductionCompany[];
+  release_date: string;
+  revenue: number;
+  runtime: number;
+  status: string;
+  tagline: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface Cast {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string | null;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}
+
+export interface Crew {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string | null;
+  credit_id: string;
+  department: string;
+  job: string;
+}
+
+export interface Credits {
+  id: number;
+  cast: Cast[];
+  crew: Crew[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -93,5 +165,34 @@ export class MoviesService {
   getMovieById(movieId: number): Observable<Movie> {
     const url = `${this.baseUrl}/movie/${movieId}?api_key=${this.apiKey}`;
     return this.http.get<Movie>(url);
+  }
+
+  /**
+   * Fetch detailed movie information by ID from TMDB API
+   * @param movieId The TMDB movie ID
+   * @returns Observable of MovieDetails with full information
+   */
+  getMovieDetails(movieId: number): Observable<MovieDetails> {
+    const url = `${this.baseUrl}/movie/${movieId}?api_key=${this.apiKey}`;
+    return this.http.get<MovieDetails>(url);
+  }
+
+  /**
+   * Fetch movie credits (cast and crew) by ID from TMDB API
+   * @param movieId The TMDB movie ID
+   * @returns Observable of Credits containing cast and crew
+   */
+  getMovieCredits(movieId: number): Observable<Credits> {
+    const url = `${this.baseUrl}/movie/${movieId}/credits?api_key=${this.apiKey}`;
+    return this.http.get<Credits>(url);
+  }
+
+  /**
+   * Get the full profile URL for a person
+   * @param profilePath The profile path from the API
+   * @returns Full URL to the profile image
+   */
+  getProfileUrl(profilePath: string | null): string {
+    return profilePath ? `${this.imageBaseUrl}${profilePath}` : '';
   }
 }

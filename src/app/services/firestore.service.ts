@@ -103,4 +103,25 @@ export class FirestoreService {
       throw error;
     }
   }
+
+  /**
+   * Get user profile information by user ID
+   * @param userId The Firebase user ID
+   * @returns User profile data or null
+   */
+  async getUserProfile(userId: string) {
+    try {
+      const docRef = doc(this.firestore, 'users', userId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        return { id: docSnap.id, ...docSnap.data() };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error getting user profile:', error);
+      return null;
+    }
+  }
 }
