@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ getTitle() }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading users...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading && users.length === 0">
+    <ion-icon [name]="mode === 'followers' ? 'people-outline' : 'person-add-outline'" class="empty-icon"></ion-icon>
+    <h2>No {{ mode === 'followers' ? 'Followers' : 'Following' }} Yet</h2>
+    <p *ngIf="mode === 'followers'">Nobody is following you yet</p>
+    <p *ngIf="mode === 'following'">You're not following anyone yet</p>
+  </div>
+
+  <!-- Users List -->
+  <ion-list lines="none" *ngIf="!isLoading && users.length > 0">
+    <ion-item *ngFor="let user of users" class="user-item">
+      <ion-avatar slot="start">
+        <img [src]="user.photoURL || 'https://ionicframework.com/docs/img/demos/avatar.svg'" [alt]="user.displayName" />
+      </ion-avatar>
+      
+      <ion-label>
+        <h2>{{ user.displayName }}</h2>
+        <p>{{ user.email }}</p>
+      </ion-label>
+
+      <ion-button 
+        slot="end" 
+        [fill]="isFollowing(user.id) ? 'outline' : 'solid'"
+        [color]="isFollowing(user.id) ? 'medium' : 'primary'"
+        size="small"
+        (click)="toggleFollow(user)">
+        <ion-icon [name]="isFollowing(user.id) ? 'person-remove-outline' : 'person-add-outline'" slot="start"></ion-icon>
+        {{ isFollowing(user.id) ? 'Unfollow' : 'Follow' }}
+      </ion-button>
+    </ion-item>
+  </ion-list>
+</ion-content>

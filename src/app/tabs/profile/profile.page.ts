@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FavoritesService } from '../../services/favorites.service';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { UserService } from '../../services/user.service';
+import { LoadingController, AlertController, ModalController } from '@ionic/angular';
+import { FollowersModalComponent } from '../../components/followers-modal/followers-modal.component';
 
 interface UserProfile {
   name: string;
@@ -51,8 +53,10 @@ export class ProfilePage implements OnInit {
     private router: Router,
     private authService: AuthService,
     private favoritesService: FavoritesService,
+    private userService: UserService,
     private loadingController: LoadingController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -116,14 +120,47 @@ export class ProfilePage implements OnInit {
     this.totalMoviesWatched = favoriteMovies.length;
     this.userProfile.stats.moviesWatched = this.totalMoviesWatched;
 
-    // Mock followers/following data (you can implement this feature later with Firestore)
-    this.userProfile.stats.followers = Math.floor(Math.random() * 500) + 50;
-    this.userProfile.stats.following = Math.floor(Math.random() * 200) + 20;
+    // Get real followers/following counts
+    const followCounts = await this.userService.getFollowCounts();
+    this.userProfile.stats.followers = followCounts.followers;
+    this.userProfile.stats.following = followCounts.following;
+  }
+
+  async openFollowersModal() {
+    const modal = await this.modalController.create({
+      component: FollowersModalComponent,
+      componentProps: {
+        mode: 'followers'
+      }
+    });
+    await modal.present();
+
+    // Refresh stats when modal is dismissed
+    const { data } = await modal.onWillDismiss();
+    this.loadUserStats();
+  }
+
+  async openFollowingModal() {
+    const modal = await this.modalController.create({
+      component: FollowersModalComponent,
+      componentProps: {
+        mode: 'following'
+      }
+    });
+    await modal.present();
+
+    // Refresh stats when modal is dismissed
+    const { data } = await modal.onWillDismiss();
+    this.loadUserStats();
   }
 
   navigateTo(page: string) {
     console.log('Navigate to:', page);
     // Add navigation logic here
+  }
+
+  navigateToUsers() {
+    this.router.navigate(['/tabs/users']);
   }
 
   async logout() {

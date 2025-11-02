@@ -70,6 +70,22 @@ ion-content {
       text-align: center;
       flex: 1;
 
+      &.clickable {
+        cursor: pointer;
+        transition: transform 0.2s, background-color 0.2s;
+        border-radius: 12px;
+        padding: 8px;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+          transform: scale(1.05);
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
+
       h3 {
         font-size: 28px;
         font-weight: 700;

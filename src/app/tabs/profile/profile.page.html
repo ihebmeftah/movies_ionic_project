@@ -2,6 +2,9 @@
   <ion-toolbar>
     <ion-title>Profile</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="navigateToUsers()">
+        <ion-icon name="people-outline"></ion-icon>
+      </ion-button>
       <ion-button>
         <ion-icon name="settings-outline"></ion-icon>
       </ion-button>
@@ -22,11 +25,11 @@
 
     <!-- Follow Stats Section -->
     <div class="follow-stats-section">
-      <div class="follow-stat-item">
+      <div class="follow-stat-item clickable" (click)="openFollowersModal()">
         <h3>{{ userProfile.stats.followers }}</h3>
         <p>Followers</p>
       </div>
-      <div class="follow-stat-item">
+      <div class="follow-stat-item clickable" (click)="openFollowingModal()">
         <h3>{{ userProfile.stats.following }}</h3>
         <p>Following</p>
       </div>

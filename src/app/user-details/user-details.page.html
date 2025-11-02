@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>User Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- User Profile -->
+  <div class="profile-container" *ngIf="!isLoading && user">
+    <!-- User Header -->
+    <div class="user-header">
+      <ion-avatar class="user-avatar">
+        <img [src]="user.photoURL || 'https://ionicframework.com/docs/img/demos/avatar.svg'" [alt]="user.displayName" />
+      </ion-avatar>
+      
+      <h1>{{ user.displayName }}</h1>
+      <p class="user-email">{{ user.email }}</p>
+
+      <!-- Follow Button -->
+      <ion-button 
+        *ngIf="!isCurrentUser"
+        expand="block" 
+        shape="round"
+        [fill]="isFollowing ? 'outline' : 'solid'"
+        [color]="isFollowing ? 'medium' : 'primary'"
+        class="follow-button"
+        (click)="toggleFollow()">
+        <ion-icon [name]="isFollowing ? 'person-remove-outline' : 'person-add-outline'" slot="start"></ion-icon>
+        {{ isFollowing ? 'Unfollow' : 'Follow' }}
+      </ion-button>
+
+      <div class="badge-current-user" *ngIf="isCurrentUser">
+        <ion-chip color="primary">
+          <ion-icon name="person-circle"></ion-icon>
+          <ion-label>Your Profile</ion-label>
+        </ion-chip>
+      </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+      <div class="stat-item clickable" (click)="openFollowersModal()">
+        <h2>{{ followersCount }}</h2>
+        <p>Followers</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item clickable" (click)="openFollowingModal()">
+        <h2>{{ followingCount }}</h2>
+        <p>Following</p>
+      </div>
+    </div>
+
+    <!-- Additional Info Card -->
+    <ion-card class="info-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="information-circle-outline"></ion-icon>
+          About
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="info-item">
+          <ion-icon name="mail-outline"></ion-icon>
+          <div class="info-text">
+            <p class="info-label">Email</p>
+            <p class="info-value">{{ user.email }}</p>
+          </div>
+        </div>
+        
+        <div class="info-item" *ngIf="user.createdAt">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <div class="info-text">
+            <p class="info-label">Member Since</p>
+            <p class="info-value">{{ user.createdAt | date: 'MMM yyyy' }}</p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

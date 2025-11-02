@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
-import { noAuthGuard } from './guards/no-auth.guard';
 
 const routes: Routes = [
   {
@@ -28,6 +27,11 @@ const routes: Routes = [
     path: 'movie-details',
     loadChildren: () => import('./movie-details/movie-details.module').then( m => m.MovieDetailsPageModule)
   },
+  {
+    path: 'user-details/:id',
+    loadChildren: () => import('./user-details/user-details.module').then( m => m.UserDetailsPageModule),
+    canActivate: [authGuard] // Protected - requires authentication
+  }
 ];
 
 @NgModule({
