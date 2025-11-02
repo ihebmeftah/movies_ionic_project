@@ -19,4 +19,4 @@ import { FollowersModalModule } from '../components/followers-modal/followers-mo
   ],
   declarations: [UserDetailsPage]
 })
-export class UserDetailsPageModule {}
+export class UserDetailsPageModule { }

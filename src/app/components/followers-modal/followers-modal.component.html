@@ -30,19 +30,16 @@
       <ion-avatar slot="start">
         <img [src]="user.photoURL || 'https://ionicframework.com/docs/img/demos/avatar.svg'" [alt]="user.displayName" />
       </ion-avatar>
-      
+
       <ion-label>
         <h2>{{ user.displayName }}</h2>
         <p>{{ user.email }}</p>
       </ion-label>
 
-      <ion-button 
-        slot="end" 
-        [fill]="isFollowing(user.id) ? 'outline' : 'solid'"
-        [color]="isFollowing(user.id) ? 'medium' : 'primary'"
-        size="small"
-        (click)="toggleFollow(user)">
-        <ion-icon [name]="isFollowing(user.id) ? 'person-remove-outline' : 'person-add-outline'" slot="start"></ion-icon>
+      <ion-button slot="end" [fill]="isFollowing(user.id) ? 'outline' : 'solid'"
+        [color]="isFollowing(user.id) ? 'medium' : 'primary'" size="small" (click)="toggleFollow(user)">
+        <ion-icon [name]="isFollowing(user.id) ? 'person-remove-outline' : 'person-add-outline'"
+          slot="start"></ion-icon>
         {{ isFollowing(user.id) ? 'Unfollow' : 'Follow' }}
       </ion-button>
     </ion-item>

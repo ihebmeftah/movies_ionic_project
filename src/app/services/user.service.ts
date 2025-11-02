@@ -47,12 +47,12 @@ export class UserService {
     try {
       const currentUser = this.authService.getCurrentUser();
       const usersCollection = collection(this.firestore, 'users');
-      
+
       // Get all users (Firestore doesn't support text search, so we filter client-side)
       const querySnapshot = await getDocs(usersCollection);
-      
+
       const users: User[] = [];
-      
+
       // If no search term, return all users (except current user)
       if (!searchTerm || searchTerm.trim().length === 0) {
         querySnapshot.forEach((doc) => {
@@ -69,18 +69,18 @@ export class UserService {
         });
         return users;
       }
-      
+
       // Convert search term to lowercase for case-insensitive search
       const searchLower = searchTerm.toLowerCase();
-      
+
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         const displayName = (data['displayName'] || '').toLowerCase();
         const email = (data['email'] || '').toLowerCase();
-        
+
         // Filter by display name or email containing search term
-        if ((displayName.includes(searchLower) || email.includes(searchLower)) 
-            && doc.id !== currentUser?.uid) { // Exclude current user
+        if ((displayName.includes(searchLower) || email.includes(searchLower))
+          && doc.id !== currentUser?.uid) { // Exclude current user
           users.push({
             id: doc.id,
             displayName: data['displayName'] || 'User',
@@ -90,7 +90,7 @@ export class UserService {
           });
         }
       });
-      
+
       return users;
     } catch (error) {
       console.error('Error searching users:', error);
@@ -116,7 +116,7 @@ export class UserService {
       // Create a follow relationship
       const followId = `${currentUser.uid}_${userId}`;
       const followRef = doc(this.firestore, 'follows', followId);
-      
+
       const followData: Follow = {
         followerId: currentUser.uid,
         followingId: userId,
@@ -144,7 +144,7 @@ export class UserService {
 
       const followId = `${currentUser.uid}_${userId}`;
       const followRef = doc(this.firestore, 'follows', followId);
-      
+
       await deleteDoc(followRef);
       console.log(`User ${currentUser.uid} unfollowed user ${userId}`);
     } catch (error) {
@@ -168,7 +168,7 @@ export class UserService {
       const followId = `${currentUser.uid}_${userId}`;
       const followRef = doc(this.firestore, 'follows', followId);
       const docSnap = await getDoc(followRef);
-      
+
       return docSnap.exists();
     } catch (error) {
       console.error('Error checking follow status:', error);
@@ -184,7 +184,7 @@ export class UserService {
     try {
       const currentUser = this.authService.getCurrentUser();
       const targetUserId = userId || currentUser?.uid;
-      
+
       if (!targetUserId) {
         return [];
       }
@@ -223,7 +223,7 @@ export class UserService {
     try {
       const currentUser = this.authService.getCurrentUser();
       const targetUserId = userId || currentUser?.uid;
-      
+
       if (!targetUserId) {
         return [];
       }
@@ -263,13 +263,13 @@ export class UserService {
     try {
       const currentUser = this.authService.getCurrentUser();
       const targetUserId = userId || currentUser?.uid;
-      
+
       if (!targetUserId) {
         return { followers: 0, following: 0 };
       }
 
       const followsCollection = collection(this.firestore, 'follows');
-      
+
       // Get followers count
       const followersQuery = query(followsCollection, where('followingId', '==', targetUserId));
       const followersSnapshot = await getDocs(followersQuery);

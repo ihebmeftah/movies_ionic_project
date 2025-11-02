@@ -19,4 +19,4 @@ import { FollowersModalModule } from '../../components/followers-modal/followers
   ],
   declarations: [ProfilePage]
 })
-export class ProfilePageModule {}
+export class ProfilePageModule { }

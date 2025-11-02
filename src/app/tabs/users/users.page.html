@@ -2,14 +2,10 @@
   <ion-toolbar>
     <ion-title>Users</ion-title>
   </ion-toolbar>
-  
+
   <!-- Search Bar -->
   <ion-toolbar>
-    <ion-searchbar
-      [(ngModel)]="searchTerm"
-      (ionInput)="onSearch()"
-      placeholder="Search users..."
-      debounce="300"
+    <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="onSearch()" placeholder="Search users..." debounce="300"
       animated="true">
     </ion-searchbar>
   </ion-toolbar>
@@ -18,11 +14,8 @@
 <ion-content [fullscreen]="true">
   <!-- Pull to Refresh -->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content
-      pullingIcon="chevron-down-circle-outline"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles"
-      refreshingText="Refreshing...">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
 
@@ -49,27 +42,26 @@
   <!-- Users List -->
   <div class="users-container" *ngIf="!isLoading && filteredUsers.length > 0">
     <div class="users-header">
-      <h3>{{ filteredUsers.length }} {{ filteredUsers.length === 1 ? 'user' : 'users' }}{{ searchTerm ? ' found' : ' registered' }}</h3>
+      <h3>{{ filteredUsers.length }} {{ filteredUsers.length === 1 ? 'user' : 'users' }}{{ searchTerm ? ' found' : '
+        registered' }}</h3>
     </div>
 
     <ion-list lines="none">
       <ion-item *ngFor="let user of filteredUsers" class="user-item" (click)="viewUserDetails(user.id)" button>
         <ion-avatar slot="start">
-          <img [src]="user.photoURL || 'https://ionicframework.com/docs/img/demos/avatar.svg'" [alt]="user.displayName" />
+          <img [src]="user.photoURL || 'https://ionicframework.com/docs/img/demos/avatar.svg'"
+            [alt]="user.displayName" />
         </ion-avatar>
-        
+
         <ion-label>
           <h2>{{ user.displayName }}</h2>
           <p>{{ user.email }}</p>
         </ion-label>
 
-        <ion-button 
-          slot="end" 
-          [fill]="isFollowing(user.id) ? 'outline' : 'solid'"
-          [color]="isFollowing(user.id) ? 'medium' : 'primary'"
-          size="small"
-          (click)="toggleFollow(user, $event)">
-          <ion-icon [name]="isFollowing(user.id) ? 'person-remove-outline' : 'person-add-outline'" slot="start"></ion-icon>
+        <ion-button slot="end" [fill]="isFollowing(user.id) ? 'outline' : 'solid'"
+          [color]="isFollowing(user.id) ? 'medium' : 'primary'" size="small" (click)="toggleFollow(user, $event)">
+          <ion-icon [name]="isFollowing(user.id) ? 'person-remove-outline' : 'person-add-outline'"
+            slot="start"></ion-icon>
           {{ isFollowing(user.id) ? 'Unfollow' : 'Follow' }}
         </ion-button>
       </ion-item>

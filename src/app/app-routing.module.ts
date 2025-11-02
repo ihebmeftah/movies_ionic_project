@@ -25,11 +25,11 @@ const routes: Routes = [
   },
   {
     path: 'movie-details',
-    loadChildren: () => import('./movie-details/movie-details.module').then( m => m.MovieDetailsPageModule)
+    loadChildren: () => import('./movie-details/movie-details.module').then(m => m.MovieDetailsPageModule)
   },
   {
     path: 'user-details/:id',
-    loadChildren: () => import('./user-details/user-details.module').then( m => m.UserDetailsPageModule),
+    loadChildren: () => import('./user-details/user-details.module').then(m => m.UserDetailsPageModule),
     canActivate: [authGuard] // Protected - requires authentication
   }
 ];

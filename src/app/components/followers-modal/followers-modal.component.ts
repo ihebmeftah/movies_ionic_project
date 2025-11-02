@@ -11,7 +11,7 @@ import { UserService, User } from '../../services/user.service';
 export class FollowersModalComponent implements OnInit {
   @Input() mode: 'followers' | 'following' = 'followers';
   @Input() userId?: string;
-  
+
   users: User[] = [];
   isLoading: boolean = true;
   followingStatus: Map<string, boolean> = new Map();
@@ -51,7 +51,7 @@ export class FollowersModalComponent implements OnInit {
 
   async toggleFollow(user: User) {
     const isFollowing = this.followingStatus.get(user.id) || false;
-    
+
     const loading = await this.loadingController.create({
       message: isFollowing ? 'Unfollowing...' : 'Following...',
       spinner: 'crescent'
@@ -63,7 +63,7 @@ export class FollowersModalComponent implements OnInit {
         await this.userService.unfollowUser(user.id);
         this.followingStatus.set(user.id, false);
         this.showToast(`Unfollowed ${user.displayName}`, 'success');
-        
+
         // If we're in the following list and unfollowed, remove from list
         if (this.mode === 'following') {
           this.users = this.users.filter(u => u.id !== user.id);

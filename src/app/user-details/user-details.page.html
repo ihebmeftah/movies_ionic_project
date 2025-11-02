@@ -23,19 +23,13 @@
       <ion-avatar class="user-avatar">
         <img [src]="user.photoURL || 'https://ionicframework.com/docs/img/demos/avatar.svg'" [alt]="user.displayName" />
       </ion-avatar>
-      
+
       <h1>{{ user.displayName }}</h1>
       <p class="user-email">{{ user.email }}</p>
 
       <!-- Follow Button -->
-      <ion-button 
-        *ngIf="!isCurrentUser"
-        expand="block" 
-        shape="round"
-        [fill]="isFollowing ? 'outline' : 'solid'"
-        [color]="isFollowing ? 'medium' : 'primary'"
-        class="follow-button"
-        (click)="toggleFollow()">
+      <ion-button *ngIf="!isCurrentUser" expand="block" shape="round" [fill]="isFollowing ? 'outline' : 'solid'"
+        [color]="isFollowing ? 'medium' : 'primary'" class="follow-button" (click)="toggleFollow()">
         <ion-icon [name]="isFollowing ? 'person-remove-outline' : 'person-add-outline'" slot="start"></ion-icon>
         {{ isFollowing ? 'Unfollow' : 'Follow' }}
       </ion-button>
@@ -77,7 +71,7 @@
             <p class="info-value">{{ user.email }}</p>
           </div>
         </div>
-        
+
         <div class="info-item" *ngIf="user.createdAt">
           <ion-icon name="calendar-outline"></ion-icon>
           <div class="info-text">

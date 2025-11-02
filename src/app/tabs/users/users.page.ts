@@ -41,7 +41,7 @@ export class UsersPage implements OnInit {
       // Get all users by searching with empty string
       this.allUsers = await this.userService.searchUsers('');
       this.filteredUsers = [...this.allUsers];
-      
+
       // Load following status for each user
       for (const user of this.allUsers) {
         const isFollowing = await this.userService.isFollowing(user.id);
@@ -57,17 +57,17 @@ export class UsersPage implements OnInit {
 
   onSearch() {
     this.isSearching = true;
-    
+
     if (!this.searchTerm || this.searchTerm.trim().length === 0) {
       this.filteredUsers = [...this.allUsers];
     } else {
       const searchLower = this.searchTerm.toLowerCase();
-      this.filteredUsers = this.allUsers.filter(user => 
+      this.filteredUsers = this.allUsers.filter(user =>
         user.displayName.toLowerCase().includes(searchLower) ||
         user.email.toLowerCase().includes(searchLower)
       );
     }
-    
+
     this.isSearching = false;
   }
 
@@ -82,7 +82,7 @@ export class UsersPage implements OnInit {
     }
 
     const isFollowing = this.followingStatus.get(user.id) || false;
-    
+
     const loading = await this.loadingController.create({
       message: isFollowing ? 'Unfollowing...' : 'Following...',
       spinner: 'crescent'

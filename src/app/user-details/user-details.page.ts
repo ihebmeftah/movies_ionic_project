@@ -17,7 +17,7 @@ export class UserDetailsPage implements OnInit {
   isLoading: boolean = true;
   isFollowing: boolean = false;
   isCurrentUser: boolean = false;
-  
+
   followersCount: number = 0;
   followingCount: number = 0;
 
@@ -47,7 +47,7 @@ export class UserDetailsPage implements OnInit {
 
       // Load user details
       this.user = await this.userService.getUserById(this.userId);
-      
+
       if (!this.user) {
         this.showToast('User not found', 'danger');
         this.goBack();
@@ -58,7 +58,7 @@ export class UserDetailsPage implements OnInit {
       if (!this.isCurrentUser) {
         this.isFollowing = await this.userService.isFollowing(this.userId);
       }
-      
+
       const counts = await this.userService.getFollowCounts(this.userId);
       this.followersCount = counts.followers;
       this.followingCount = counts.following;
