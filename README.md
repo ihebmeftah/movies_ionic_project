@@ -1,43 +1,106 @@
-# Movies Ionic Project
+# 🎬 Movies Ionic Project
 
-A mobile-first movie application built with Ionic Framework and Angular, featuring Firebase authentication and Firestore database integration.
+A comprehensive mobile-first movie discovery application built with Ionic Framework and Angular, featuring real-time Firebase integration, social features, and a modern user experience. This app allows users to discover movies, manage favorites, connect with other movie enthusiasts, and share their movie preferences.
 
-## 📱 Features
+## 📖 About The Project
 
-- **User Authentication**
+Movies Ionic Project is a full-featured cross-platform mobile application that combines movie browsing capabilities with social networking features. Users can explore movies by categories, maintain their favorite lists, follow other users, and discover what movies their friends are watching. The application leverages Firebase for authentication and real-time data synchronization, providing a seamless experience across iOS, Android, and web platforms.
 
-  - Email/Password login and registration
-  - Social authentication support (Google, Facebook, Apple)
-  - Protected routes with authentication guards
-  - User profile management
+### Key Highlights
 
-- **Movie Management**
+- **Movie Discovery**: Browse thousands of movies with detailed information, cast, crew, and ratings
+- **Social Networking**: Follow users, see their favorite movies, and discover new content through your network
+- **Real-time Updates**: Firebase Firestore integration ensures your data is always synchronized
+- **Cross-Platform**: Built with Capacitor for native iOS, Android, and web deployment
+- **Modern UI**: Sleek interface built with Ionic components and custom theming
 
-  - Browse movies by category
-  - Favorites list
-  - Movies listing with search and filter capabilities
-  - Home page with featured content
+## ✨ Features
 
-- **Cross-Platform Support**
-  - iOS support via Capacitor
-  - Android support via Capacitor
-  - Progressive Web App (PWA) capabilities
+### 🔐 User Authentication
 
-## 🛠️ Tech Stack
+- Email/Password registration and login
+- Social authentication support (Google, Facebook, Apple)
+- Secure authentication with Firebase Auth
+- Protected routes with authentication guards
+- Password reset functionality
+- User profile management with avatar support
 
-- **Framework**: Ionic 8.0.0
-- **Angular**: 20.0.0
-- **Capacitor**: 7.4.3
-- **Firebase**: 12.5.0
-- **TypeScript**: Latest
-- **RxJS**: 7.8.0
+### 🎥 Movie Features
 
-### Key Dependencies
+- Browse movies by category (Popular, Top Rated, Upcoming, Now Playing)
+- Detailed movie information including cast, crew, and production details
+- Add/remove movies to favorites
+- Search and filter capabilities
+- Movie ratings and reviews
+- High-quality movie posters and backdrops
 
-- `@angular/fire` - Firebase integration for Angular
-- `@capacitor/camera` - Camera functionality
-- `@capacitor/haptics` - Haptic feedback
-- `@ionic/pwa-elements` - PWA components
+## 📸 Screenshots
+
+### Authentication Screens
+
+<div align="center">
+
+|          Login Screen           |            Register Screen            |
+| :-----------------------------: | :-----------------------------------: |
+| ![Login](screenshots/login.png) | ![Register](screenshots/register.png) |
+
+</div>
+
+### Main Application Screens
+
+<div align="center">
+
+|          Home Screen          |            Movies List            |                Categories                 |
+| :---------------------------: | :-------------------------------: | :---------------------------------------: |
+| ![Home](screenshots/home.png) | ![Movies](screenshots/movies.png) | ![Categories](screenshots/categories.png) |
+
+</div>
+
+### Movie Details & Favorites
+
+<div align="center">
+
+|                  Movie Details                   |               Favorites                |
+| :----------------------------------------------: | :------------------------------------: |
+| ![Movie Details](screenshots/movies-details.png) | ![Favorites](screenshots/favorite.png) |
+
+</div>
+
+### Social Features
+
+<div align="center">
+
+|                                Profile Screen                                |             User Matching             |
+| :--------------------------------------------------------------------------: | :-----------------------------------: |
+| ![Profile](<screenshots/localhost_8100_tabs_profile(iPhone%2012%20Pro).png>) | ![Matching](screenshots/matching.png) |
+
+</div>
+
+### 👥 Social Features
+
+- User profiles with customizable avatars
+- Follow/unfollow other users
+- View followers and following lists
+- Discover other users' favorite movies
+- Matching system to find users with similar tastes
+- Real-time updates on social interactions
+
+## 🛠️ Technologies Used
+
+### Frontend Framework
+
+- **Ionic Framework** `8.0.0` - Mobile UI framework
+- **Angular** `20.0.0` - Web application framework
+- **TypeScript** `5.8.0` - Programming language
+- **RxJS** `7.8.0` - Reactive programming
+- **Ionicons** `7.0.0` - Icon library
+
+### Backend & Database
+
+- **Firebase** `12.5.0` - Backend as a Service
+- **@angular/fire** `20.0.1` - Angular Firebase integration
+- **Firestore** - NoSQL cloud database
+- **Firebase Authentication** - User authentication service
 
 ## 📋 Prerequisites
 
@@ -45,216 +108,17 @@ Before you begin, ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/) (v18 or higher recommended)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [Ionic CLI](https://ionicframework.com/docs/cli) (`npm install -g @ionic/cli`)
-- [Angular CLI](https://angular.io/cli) (`npm install -g @angular/cli`)
+- [Ionic CLI](https://ionicframework.com/docs/cli) - Install globally: `npm install -g @ionic/cli`
+- [Angular CLI](https://angular.io/cli) - Install globally: `npm install -g @angular/cli`
 
-For mobile development:
+### For Mobile Development
 
-- [Android Studio](https://developer.android.com/studio) (for Android development)
-- [Xcode](https://developer.apple.com/xcode/) (for iOS development, macOS only)
+- **Android**: [Android Studio](https://developer.android.com/studio) with Android SDK
+- **iOS**: [Xcode](https://developer.apple.com/xcode/) (macOS only) with iOS SDK
+- **Java Development Kit (JDK)** - Required for Android development
 
-## 🚀 Getting Started
+### Additional Requirements
 
-### Installation
-
-1. Clone the repository:
-
-```bash
-git clone <repository-url>
-cd movies_ionic_project
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Configure Firebase:
-   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
-   - Enable Authentication (Email/Password and desired social providers)
-   - Enable Firestore Database
-   - Update `src/environments/environment.ts` and `src/environments/environment.prod.ts` with your Firebase configuration
-
-### Development
-
-Run the application in development mode:
-
-```bash
-# Start development server
-npm start
-# or
-ionic serve
-```
-
-The application will open at `http://localhost:8100/`
-
-### Build
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-### Testing
-
-Run unit tests:
-
-```bash
-npm test
-```
-
-## 📱 Mobile Development
-
-### iOS
-
-1. Add iOS platform:
-
-```bash
-ionic capacitor add ios
-```
-
-2. Build and sync:
-
-```bash
-npm run build
-ionic capacitor sync ios
-```
-
-3. Open in Xcode:
-
-```bash
-ionic capacitor open ios
-```
-
-### Android
-
-1. Add Android platform:
-
-```bash
-ionic capacitor add android
-```
-
-2. Build and sync:
-
-```bash
-npm run build
-ionic capacitor sync android
-```
-
-3. Open in Android Studio:
-
-```bash
-ionic capacitor open android
-```
-
-## 📁 Project Structure
-
-```
-src/
-├── app/
-│   ├── auth/                 # Authentication module
-│   │   ├── login/           # Login page
-│   │   └── register/        # Registration page
-│   ├── category/            # Category browsing
-│   ├── components/          # Reusable components
-│   │   └── social-button-component/
-│   ├── guards/              # Route guards
-│   │   ├── auth.guard.ts    # Protect authenticated routes
-│   │   └── no-auth.guard.ts # Redirect authenticated users
-│   ├── services/            # Application services
-│   │   ├── auth.service.ts
-│   │   ├── firebase-config-checker.service.ts
-│   │   └── firestore.service.ts
-│   └── tabs/                # Tab navigation
-│       ├── home/            # Home page
-│       ├── movies-list/     # Movies listing
-│       ├── favorites/       # Favorites page
-│       └── profile/         # User profile
-├── assets/                  # Static assets
-├── environments/            # Environment configurations
-└── theme/                   # Styling and theming
-```
-
-## 🔐 Firebase Configuration
-
-Create a `src/environments/environment.ts` file with your Firebase credentials:
-
-```typescript
-export const environment = {
-  production: false,
-  firebaseConfig: {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-  },
-};
-```
-
-And `src/environments/environment.prod.ts` for production:
-
-```typescript
-export const environment = {
-  production: true,
-  firebaseConfig: {
-    // Your production Firebase config
-  },
-};
-```
-
-## 🎨 Customization
-
-- **Theming**: Modify `src/theme/variables.scss` to customize the app's color scheme
-- **Global Styles**: Edit `src/global.scss` for global styling
-- **Icons**: Replace icons in `src/assets/icon/`
-
-## 📝 Available Scripts
-
-- `npm start` - Start development server
-- `npm run build` - Build for production
-- `npm test` - Run unit tests
-- `npm run lint` - Run ESLint
-- `npm run watch` - Build in watch mode
-
-## 🔒 Security
-
-- Route protection with authentication guards
-- Firebase security rules should be configured
-- Environment variables for sensitive data
-- Secure authentication flows
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 👥 Authors
-
-- Ionic Framework Team (Base Template)
-- Your Name - Custom Implementation
-
-## 🙏 Acknowledgments
-
-- [Ionic Framework](https://ionicframework.com/)
-- [Angular](https://angular.io/)
-- [Firebase](https://firebase.google.com/)
-- [Capacitor](https://capacitorjs.com/)
-
-## 📞 Support
-
-For support, email <your-email@example.com> or open an issue in the repository.
-
----
-
-Made with ❤️ using Ionic Framework
+- **Firebase Account** - Create a free account at [Firebase Console](https://console.firebase.google.com/)
+- **TMDB API Key** - Sign up at [The Movie Database](https://www.themoviedb.org/) for movie data access
+- **Git** - For version control
